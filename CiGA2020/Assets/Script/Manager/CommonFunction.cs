@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class CommonFunction : Singleton<CommonFunction>
 {
+    public string tagPlayer = "Player";
+    
+
     public Sprite LoadSprite(dDirection dir)
     {
         if (dir == dDirection.dNone)
@@ -43,5 +46,11 @@ public class CommonFunction : Singleton<CommonFunction>
             return Resources.Load("Temp/map1", typeof(Sprite)) as Sprite;
         }
         return null;
+    }
+
+    public GameObject LoadSkill(dDirection dir)
+    {
+        GameObject tem = (GameObject)Resources.Load("Prefabs/crackPrefab");
+        return tem;
     }
 }

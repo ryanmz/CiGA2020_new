@@ -10,3 +10,11 @@
     dLeft_Left = 7,
     dRight_Right = 8,
 }
+
+public enum dDamage
+{
+    dLevelNone = 0,
+    dLevelOne = 1,
+    dLevelTwo = 2,
+    dLevelThree = 3,
+}
