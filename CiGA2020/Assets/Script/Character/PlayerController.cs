@@ -25,19 +25,19 @@ public class PlayerController : MonoBehaviour
     //角色控制
     private void Controller()
     {
-        if (Input.GetKeyDown(KeyCode.W))
+        if (Input.GetKey(KeyCode.W))
         {
             currentDir = dDirection.dUp;
         }
-        else if (Input.GetKeyDown(KeyCode.S))
+        else if (Input.GetKey(KeyCode.S))
         {
             currentDir = dDirection.dDown;
         }
-        else if (Input.GetKeyDown(KeyCode.A))
+        else if (Input.GetKey(KeyCode.A))
         {
             currentDir = dDirection.dLeft;
         }
-        else if (Input.GetKeyDown(KeyCode.D))
+        else if (Input.GetKey(KeyCode.D))
         {
             currentDir = dDirection.dRight;
         }
@@ -55,7 +55,7 @@ public class PlayerController : MonoBehaviour
         Vector2 v = new Vector2();
         if(dir == dDirection.dNone)
         {
-            v = new Vector2(0.0f, 0.0f)*Time.deltaTime;
+            v = new Vector2(0.0f, 0.0f);
         }
         else if (dir == dDirection.dUp)
         {
@@ -67,11 +67,11 @@ public class PlayerController : MonoBehaviour
         }
         else if (dir == dDirection.dLeft)
         {
-            v = new Vector2(speed, 0.0f) * Time.deltaTime;
+            v = new Vector2(-speed, 0.0f) * Time.deltaTime;
         }
         else if (dir == dDirection.dRight)
         {
-            v = new Vector2(-speed, 0.0f) * Time.deltaTime;
+            v = new Vector2(speed, 0.0f)*Time.deltaTime;
         }
 
         this.transform.Translate(v);
