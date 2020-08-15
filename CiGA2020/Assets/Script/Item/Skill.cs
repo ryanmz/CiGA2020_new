@@ -59,7 +59,7 @@ public class Skill : MonoBehaviour
     {
         if (collision.gameObject.tag == CommonFunction.tagPlayer)
         {
-            this.OnDamage();
+            this.OnDamage(collision.gameObject);
         }
     }
     #endregion
@@ -108,9 +108,18 @@ public class Skill : MonoBehaviour
     }
 
     //技能伤害判定
-    void OnDamage()
+    void OnDamage(GameObject target)
     {
-        Debug.Log("HA");
+        if (this.cellType == dCellType.dCrack_1)
+        {
+            target.GetComponent<PlayerController>().fall = true;
+            target.GetComponent<PlayerController>().die = false;
+        }
+        else if(this.cellType == dCellType.dCrack_2)
+        {
+            target.GetComponent<PlayerController>().fall = false;
+            target.GetComponent<PlayerController>().die = true;
+        }
     }
     #endregion
 

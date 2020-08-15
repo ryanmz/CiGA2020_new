@@ -6,18 +6,23 @@ public class PlayerController : MonoBehaviour
 {
     //数据管理
     #region
+
     //位移数据
     public float speed;
     public dDirection currentDir;
 
+    //攻击数据
+    public bool isAttack = false;
+
     //摔倒数据
-    
     public float fallTime;
     public float fallSpeed;
     public float pauseFallTime;
     public float undmgTime;
     public bool fall;
 
+    //死亡数据
+    public bool die = false;
 
     private float recordTime = 0.0f;
     #endregion
@@ -28,6 +33,7 @@ public class PlayerController : MonoBehaviour
     public AnimationClip[] animListRun;
     public AnimationClip[] animListAttack;
     public AnimationClip[] animListFall;
+    public AnimationClip[] animListDie;
     protected Animator anim;
     protected AnimatorOverrideController animOverride;
     protected SpriteRenderer sprite;
@@ -68,7 +74,7 @@ public class PlayerController : MonoBehaviour
         
         AnimatorStateInfo animStateInfo = anim.GetCurrentAnimatorStateInfo(0);
 
-        if (!animStateInfo.IsName("Attack") && !animStateInfo.IsName("Fall"))
+        if (!animStateInfo.IsName("Attack") && !animStateInfo.IsName("Fall") &&!animStateInfo.IsName("Die"))
         {
             this.ResetFall();//重置摔倒
 
@@ -76,9 +82,18 @@ public class PlayerController : MonoBehaviour
 
             this.AnimSetUp(this.currentDir);//角色动画选择
         }
-        if (animStateInfo.IsName("Fall"))
+       else if (animStateInfo.IsName("Attack") && animStateInfo.normalizedTime > 0.4&& this.isAttack)
+        {
+            this.GenerateCrack(this.transform, this.currentDir);
+            this.isAttack = false;
+        }
+        else if (animStateInfo.IsName("Fall"))
         {
             this.Fall();
+        }
+        else if (animStateInfo.IsName("Die"))
+        {
+            this.Die();
         }
     }
 
@@ -94,11 +109,19 @@ public class PlayerController : MonoBehaviour
 
             this.AnimSetUp(this.currentDir);//角色动画选择
         }
+        else if (animStateInfo.IsName("Attack") && animStateInfo.normalizedTime > 0.4&&this.isAttack)
+        {
+            this.GenerateCrack(this.transform, this.currentDir);
+            this.isAttack = false;
+        }
         else if (animStateInfo.IsName("Fall"))
         {
             this.Fall();
         }
-
+        else if (animStateInfo.IsName("Die"))
+        {
+            this.Die();
+        }
 
     }
 
@@ -162,8 +185,12 @@ public class PlayerController : MonoBehaviour
 
         if (this.fall)
         {
-            anim.SetTrigger("Fall");
+            this.anim.SetTrigger("Fall");
             this.fall = false;
+        }
+        if (this.die)
+        {
+            this.anim.SetBool("Die", true);
         }
     }
 
@@ -229,6 +256,10 @@ public class PlayerController : MonoBehaviour
             anim.SetTrigger("Fall");
             this.fall = false;
         }
+        if (this.die)
+        {
+            this.anim.SetBool("Die", true);
+        }
     }
 
     //角色攻击
@@ -245,8 +276,8 @@ public class PlayerController : MonoBehaviour
             anim.SetTrigger("Attack");
             Vector2 v = new Vector2(0, 0);
             this.Move(v,this.speed);
-           
-            this.GenerateCrack(this.transform, this.currentDir);
+            this.isAttack = true;
+            //this.GenerateCrack(this.transform, this.currentDir);
             return;
 
         }
@@ -265,10 +296,8 @@ public class PlayerController : MonoBehaviour
             anim.SetTrigger("Attack");
             Vector2 v = new Vector2(0, 0);
             this.Move(v,this.speed);
-
-
-            anim.SetFloat("Speed", 0.1f);
-            this.GenerateCrack(this.transform, this.currentDir);
+            this.isAttack = true;
+            //this.GenerateCrack(this.transform, this.currentDir);
             return;
         }
     }
@@ -291,6 +320,7 @@ public class PlayerController : MonoBehaviour
             this.animOverride["Run"] = this.animListRun[0];
             this.animOverride["Attack"] = this.animListAttack[0];
             this.animOverride["Fall"] = this.animListFall[0];
+            this.animOverride["Die"] = this.animListDie[0];
             this.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
         }
         else if(dir == dDirection.dUp_Left)
@@ -299,6 +329,7 @@ public class PlayerController : MonoBehaviour
             this.animOverride["Run"] = this.animListRun[1];
             this.animOverride["Attack"] = this.animListAttack[1];
             this.animOverride["Fall"] = this.animListFall[1];
+            this.animOverride["Die"] = this.animListDie[1];
             this.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
         }
         else if (dir == dDirection.dLeft_Left)
@@ -307,6 +338,7 @@ public class PlayerController : MonoBehaviour
             this.animOverride["Run"] = this.animListRun[2];
             this.animOverride["Attack"] = this.animListAttack[2];
             this.animOverride["Fall"] = this.animListFall[2];
+            this.animOverride["Die"] = this.animListDie[2];
             this.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
         }
         else if (dir == dDirection.dDown_Left)
@@ -315,6 +347,7 @@ public class PlayerController : MonoBehaviour
             this.animOverride["Run"] = this.animListRun[3];
             this.animOverride["Attack"] = this.animListAttack[3];
             this.animOverride["Fall"] = this.animListFall[3];
+            this.animOverride["Die"] = this.animListDie[3];
             this.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
         }
         else if (dir == dDirection.dDown_Down)
@@ -323,6 +356,7 @@ public class PlayerController : MonoBehaviour
             this.animOverride["Run"] = this.animListRun[4];
             this.animOverride["Attack"] = this.animListAttack[4];
             this.animOverride["Fall"] = this.animListFall[4];
+            this.animOverride["Die"] = this.animListDie[4];
             this.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
         }
         else if (dir == dDirection.dDown_Right)
@@ -331,6 +365,7 @@ public class PlayerController : MonoBehaviour
             this.animOverride["Run"] = this.animListRun[3];
             this.animOverride["Attack"] = this.animListAttack[3];
             this.animOverride["Fall"] = this.animListFall[3];
+            this.animOverride["Die"] = this.animListDie[3];
             this.transform.localScale = new Vector3(-1.0f, 1.0f, 1.0f);
         }
         else if (dir == dDirection.dRight_Right)
@@ -339,6 +374,7 @@ public class PlayerController : MonoBehaviour
             this.animOverride["Run"] = this.animListRun[2];
             this.animOverride["Attack"] = this.animListAttack[2];
             this.animOverride["Fall"] = this.animListFall[2];
+            this.animOverride["Die"] = this.animListDie[2];
             this.transform.localScale = new Vector3(-1.0f, 1.0f, 1.0f);
         }
         else if (dir == dDirection.dUp_Right)
@@ -347,6 +383,7 @@ public class PlayerController : MonoBehaviour
             this.animOverride["Run"] = this.animListRun[1];
             this.animOverride["Attack"] = this.animListAttack[1];
             this.animOverride["Fall"] = this.animListFall[1];
+            this.animOverride["Die"] = this.animListDie[1];
             this.transform.localScale = new Vector3(-1.0f, 1.0f, 1.0f);
         }
 
@@ -393,6 +430,13 @@ public class PlayerController : MonoBehaviour
         this.recordTime = 0.0f;
         this.anim.SetFloat("PauseTime", 0.0f);
     }
+
+    //角色死亡
+    private void Die()
+    {
+        
+    }
+
     // 生成裂缝
     #region
     public void GenerateCrack(Transform _pos, dDirection _dir)
