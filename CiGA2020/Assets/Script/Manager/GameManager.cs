@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     public int cellSize = 64;               // 格子单位长度
 
 
-    public float crackInterval = 2f;      // 裂缝生成时间间隔
+    //public float crackInterval = 2f;      // 裂缝生成时间间隔
     #endregion
 
     public dCellType[,] map;
