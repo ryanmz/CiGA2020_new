@@ -294,7 +294,7 @@ public class PlayerController : MonoBehaviour
             this.animOverride["Run"] = this.animListRun[0];
             this.animOverride["Attack"] = this.animListAttack[0];
             this.animOverride["Fall"] = this.animListFall[0];
-            this.transform.localScale = new Vector3(50.0f, 50.0f, 1.0f);
+            this.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
         }
         else if(dir == dDirection.dUp_Left)
         {
@@ -302,7 +302,7 @@ public class PlayerController : MonoBehaviour
             this.animOverride["Run"] = this.animListRun[1];
             this.animOverride["Attack"] = this.animListAttack[1];
             this.animOverride["Fall"] = this.animListFall[1];
-            this.transform.localScale = new Vector3(50.0f, 50.0f, 1.0f);
+            this.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
         }
         else if (dir == dDirection.dLeft_Left)
         {
@@ -310,7 +310,7 @@ public class PlayerController : MonoBehaviour
             this.animOverride["Run"] = this.animListRun[2];
             this.animOverride["Attack"] = this.animListAttack[2];
             this.animOverride["Fall"] = this.animListFall[2];
-            this.transform.localScale = new Vector3(50.0f, 50.0f, 1.0f);
+            this.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
         }
         else if (dir == dDirection.dDown_Left)
         {
@@ -318,7 +318,7 @@ public class PlayerController : MonoBehaviour
             this.animOverride["Run"] = this.animListRun[3];
             this.animOverride["Attack"] = this.animListAttack[3];
             this.animOverride["Fall"] = this.animListFall[3];
-            this.transform.localScale = new Vector3(50.0f, 50.0f, 1.0f);
+            this.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
         }
         else if (dir == dDirection.dDown_Down)
         {
@@ -326,7 +326,7 @@ public class PlayerController : MonoBehaviour
             this.animOverride["Run"] = this.animListRun[4];
             this.animOverride["Attack"] = this.animListAttack[4];
             this.animOverride["Fall"] = this.animListFall[4];
-            this.transform.localScale = new Vector3(50.0f, 50.0f, 1.0f);
+            this.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
         }
         else if (dir == dDirection.dDown_Right)
         {
@@ -334,7 +334,7 @@ public class PlayerController : MonoBehaviour
             this.animOverride["Run"] = this.animListRun[3];
             this.animOverride["Attack"] = this.animListAttack[3];
             this.animOverride["Fall"] = this.animListFall[3];
-            this.transform.localScale = new Vector3(-50.0f, 50.0f, 1.0f);
+            this.transform.localScale = new Vector3(-1.0f, 1.0f, 1.0f);
         }
         else if (dir == dDirection.dRight_Right)
         {
@@ -342,7 +342,7 @@ public class PlayerController : MonoBehaviour
             this.animOverride["Run"] = this.animListRun[2];
             this.animOverride["Attack"] = this.animListAttack[2];
             this.animOverride["Fall"] = this.animListFall[2];
-            this.transform.localScale = new Vector3(-50.0f, 50.0f, 1.0f);
+            this.transform.localScale = new Vector3(-1.0f, 1.0f, 1.0f);
         }
         else if (dir == dDirection.dUp_Right)
         {
@@ -350,7 +350,7 @@ public class PlayerController : MonoBehaviour
             this.animOverride["Run"] = this.animListRun[1];
             this.animOverride["Attack"] = this.animListAttack[1];
             this.animOverride["Fall"] = this.animListFall[1];
-            this.transform.localScale = new Vector3(-50.0f, 50.0f, 1.0f);
+            this.transform.localScale = new Vector3(-1.0f, 1.0f, 1.0f);
         }
 
         this.anim.runtimeAnimatorController = animOverride;
