@@ -11,6 +11,7 @@ public class CommonFunction : Singleton<CommonFunction>
 
 
     public float crackInterval = 0.5f;      // 裂缝生成时间间隔
+    public float itemInterval = 5.0f;
 
     public Sprite LoadSprite(dDirection dir)
     {
