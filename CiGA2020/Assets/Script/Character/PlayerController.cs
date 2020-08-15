@@ -11,7 +11,6 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     public bool isPlayerOne = true;//判断1P还是2P
-    public bool isFall = false;
 
     public AnimationClip[] animListIdle;
     public AnimationClip[] animListRun;
@@ -45,19 +44,6 @@ public class PlayerController : MonoBehaviour
         }
 
     }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.tag == "Crack")
-        {
-            if (other.GetComponent<Skill>().cellType == dCellType.dCrack_1 ||
-                other.GetComponent<Skill>().cellType == dCellType.dCrack_2)
-            {
-                isFall = true;
-            }
-        }
-    }
-
     #endregion
 
 
@@ -78,9 +64,9 @@ public class PlayerController : MonoBehaviour
         else
         {
 
-            this.DirectA();
-            this.Anim(this.currentDir);
-
+                this.DirectA();
+                this.Anim(this.currentDir);
+            
 
         }
     }
@@ -308,7 +294,6 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
-
     // 生成裂缝
     #region
     public void GenerateCrack(Transform _pos, dDirection _dir)
@@ -367,7 +352,7 @@ public class PlayerController : MonoBehaviour
             //{
             //    GameManager.Instance.map[x, y]++;
             //}
-            GameObject crack = GameObject.Instantiate(CommonFunction.Instance.LoadSkill(_dir, dCellType.dCrack_1));
+            GameObject crack = GameObject.Instantiate(CommonFunction.Instance.LoadSkill(_dir));
             crack.transform.position = new Vector3(x * cellSize + offset, y * cellSize + offset, 0);
 
             /*
