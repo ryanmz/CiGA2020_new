@@ -70,6 +70,7 @@
     <Compile Include="Assets\Script\Manager\ZSortObject.cs" />
     <Compile Include="Assets\Script\Singleton\Singleton.cs" />
     <Compile Include="Assets\Script\qmzTest\ChangeOrder.cs" />
+    <Compile Include="Assets\Script\qmzTest\ItemManager.cs" />
     <Reference Include="UnityEngine">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.8f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>
