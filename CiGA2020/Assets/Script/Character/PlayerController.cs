@@ -67,10 +67,7 @@ public class PlayerController : MonoBehaviour
     {
         
         AnimatorStateInfo animStateInfo = anim.GetCurrentAnimatorStateInfo(0);
-        Debug.Log("Run"+animStateInfo.IsName("Run"));
-        Debug.Log("Idle"+animStateInfo.IsName("Idle"));
-        Debug.Log("Attack" + animStateInfo.IsName("Attack"));
-        Debug.Log("Fall"+animStateInfo.IsName("Fall"));
+
         if (!animStateInfo.IsName("Attack") && !animStateInfo.IsName("Fall"))
         {
             this.ResetFall();//重置摔倒
@@ -450,12 +447,36 @@ public class PlayerController : MonoBehaviour
                 break;
             }
 
-            //if (GameManager.Instance.map[x, y] == dCellType.dCrack_1 || GameManager.Instance.map[x, y] == dCellType.dNone)
-            //{
-            //    GameManager.Instance.map[x, y]++;
-            //}
-            GameObject crack = GameObject.Instantiate(CommonFunction.Instance.LoadSkill(_dir));
+            // new
+            Debug.Log(x + ", " + y);
+            dCellType[,] tMap = GameObject.Find("GameManager").GetComponent<GameManager>().map;
+            GameObject[,] objects = GameObject.Find("GameManager").GetComponent<GameManager>().obj;
+
+            if (tMap[x, y] != dCellType.dCrack_2)
+            {
+                if (tMap[x, y] == dCellType.dCrack_1 || tMap[x, y] == dCellType.dNone)
+                {
+                    tMap[x, y]++;
+                }
+                else
+                {
+                    tMap[x, y] = dCellType.dCrack_1;
+                }
+            }
+            GameObject crack = GameObject.Instantiate(CommonFunction.Instance.LoadSkill(_dir, tMap[x, y]));
             crack.transform.position = new Vector3(x * cellSize + offset, y * cellSize + offset, 0);
+
+            // new
+            //crack.GetComponent<Skill>().cellType = tMap[x, y];
+            if (objects[x, y] == null)
+            {
+                objects[x, y] = crack;
+            }
+            else
+            {
+                Destroy(objects[x, y]);
+                objects[x, y] = crack;
+            }
 
             /*
             if (_i != 0)

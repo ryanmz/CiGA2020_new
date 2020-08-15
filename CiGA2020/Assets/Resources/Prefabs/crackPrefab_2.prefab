@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3235591719988308055}
   - component: {fileID: 3235591719988308052}
   m_Layer: 0
-  m_Name: crackPrefab
+  m_Name: crackPrefab_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -143,6 +143,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selfDamage: 0
   currentDir: 0
+  cellType: 2
   list:
   - {fileID: 7400000, guid: dda8587f2621edc4c8f3c6216c44ff4c, type: 2}
   - {fileID: 7400000, guid: f26e53580a9d31940abc8f44e538ce07, type: 2}

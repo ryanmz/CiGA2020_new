@@ -12,14 +12,25 @@ public class GameManager : MonoBehaviour
     public int cellSize = 64;               // 格子单位长度
 
 
-    public float crackInterval = 2f;      // 裂缝生成时间间隔
+    //public float crackInterval = 2f;      // 裂缝生成时间间隔
     #endregion
 
     public dCellType[,] map;
+    public GameObject[,] obj;
 
     // Start is called before the first frame update
     void Start()
     {
+        obj = new GameObject[MapWidth, MapHeight];
+        map = new dCellType[MapWidth, MapHeight];
+        for (int i = 0; i <MapWidth; i++)
+        {
+            for (int j = 0; j < MapHeight; j++)
+            {
+                obj[i, j] = null;
+                map[i, j] = dCellType.dNone;
+            }
+        }
     }
 
     // Update is called once per frame

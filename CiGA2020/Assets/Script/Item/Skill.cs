@@ -10,6 +10,7 @@ public class Skill : MonoBehaviour
     //技能属性
     public dDamage selfDamage;
     public dDirection currentDir;
+    public dCellType cellType;
    
     //技能组件
     private BoxCollider2D collider;

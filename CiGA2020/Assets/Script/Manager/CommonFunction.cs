@@ -54,12 +54,27 @@ public class CommonFunction : Singleton<CommonFunction>
     }
 
     // *需要增加二级裂缝
-    public GameObject LoadSkill(dDirection dir)
+    public GameObject LoadSkill(dDirection dir, dCellType _t)
     {
-        GameObject tem = (GameObject)Resources.Load("Prefabs/crackPrefab");
-        tem.GetComponent<Skill>().currentDir = dir;
-        tem.GetComponent<SpriteRenderer>().sortingLayerName = "bg";
-        return tem;
+        GameObject tem;
+        if (_t == dCellType.dCrack_1)
+        {
+            tem = (GameObject)Resources.Load("Prefabs/crackPrefab");
+            tem.GetComponent<Skill>().currentDir = dir;
+            tem.GetComponent<SpriteRenderer>().sortingLayerName = "bg";
+            return tem;
+        }
+        else if (_t == dCellType.dCrack_2)
+        {
+            tem = (GameObject)Resources.Load("Prefabs/crackPrefab_2");
+            tem.GetComponent<Skill>().currentDir = dir;
+            tem.GetComponent<SpriteRenderer>().sortingLayerName = "bg";
+            return tem;
+        }
+        else
+        {
+            return null;
+        }
     }
 
 
