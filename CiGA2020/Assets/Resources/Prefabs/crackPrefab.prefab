@@ -143,6 +143,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selfDamage: 0
   currentDir: 4
+  cellType: 1
   list:
   - {fileID: 7400000, guid: 25df74fd94f59754888d18a2604206ea, type: 2}
   - {fileID: 7400000, guid: 98d5f62be35dc5b449c3b70990c4cbf5, type: 2}
