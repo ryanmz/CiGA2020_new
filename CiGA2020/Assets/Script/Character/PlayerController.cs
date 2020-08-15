@@ -73,6 +73,8 @@ public class PlayerController : MonoBehaviour
         Debug.Log("Fall"+animStateInfo.IsName("Fall"));
         if (!animStateInfo.IsName("Attack") && !animStateInfo.IsName("Fall"))
         {
+            this.ResetFall();//重置摔倒
+
             this.InputA();//角色动画输入
 
             this.AnimSetUp(this.currentDir);//角色动画选择
@@ -87,8 +89,10 @@ public class PlayerController : MonoBehaviour
     {
         //this.FallAnim(this.fall);
         AnimatorStateInfo animStateInfo = anim.GetCurrentAnimatorStateInfo(0);
-        if (!animStateInfo.IsName("Attack")&&!animStateInfo.IsName("Fall"))
+        if (!animStateInfo.IsName("Attack") && !animStateInfo.IsName("Fall")) 
         {
+            this.ResetFall();//重置摔倒
+
             this.InputB();//角色动画输入
 
             this.AnimSetUp(this.currentDir);//角色动画选择
@@ -375,8 +379,7 @@ public class PlayerController : MonoBehaviour
             this.Move(v, this.fallSpeed);
             if (this.recordTime >= this.pauseFallTime)
             {
-                anim.SetFloat("PauseTime", this.pauseFallTime);
-                this.recordTime = 0.0f;
+                this.anim.SetFloat("PauseTime", this.pauseFallTime);
             }
 
         }
@@ -386,6 +389,12 @@ public class PlayerController : MonoBehaviour
             this.Move(v, this.fallSpeed);
 
         }
+    }
+
+    private void ResetFall()
+    {
+        this.recordTime = 0.0f;
+        this.anim.SetFloat("PauseTime", 0.0f);
     }
     // 生成裂缝
     #region
