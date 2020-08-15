@@ -10,7 +10,7 @@ public class CommonFunction : Singleton<CommonFunction>
     public int cellSize = 64;               // 格子单位长度
 
 
-    public float crackInterval = 2f;      // 裂缝生成时间间隔
+    public float crackInterval = 0.5f;      // 裂缝生成时间间隔
 
     public Sprite LoadSprite(dDirection dir)
     {
@@ -54,7 +54,7 @@ public class CommonFunction : Singleton<CommonFunction>
     }
 
     // *需要增加二级裂缝
-     public GameObject LoadSkill(dDirection dir)
+    public GameObject LoadSkill(dDirection dir)
     {
         GameObject tem = (GameObject)Resources.Load("Prefabs/crackPrefab");
         tem.GetComponent<Skill>().currentDir = dir;

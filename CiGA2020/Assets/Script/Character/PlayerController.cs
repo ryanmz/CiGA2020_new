@@ -391,21 +391,26 @@ public class PlayerController : MonoBehaviour
     #region
     public void GenerateCrack(Transform _pos, dDirection _dir)
     {
+        //int cellSize = CommonFunction.Instance.cellSize;
+        //int offset = (int)cellSize / 2;
+        //int posX = (int)_pos.position.x;
+        //int posY = (int)_pos.position.y - offset;
+        // int x = posX / cellSize, y = posY / cellSize;
+
+        StartCoroutine(WaitForGenerate(_pos, _dir));
+    }
+    #endregion
+
+
+    IEnumerator WaitForGenerate(Transform _pos, dDirection _dir)
+    {
         int cellSize = CommonFunction.Instance.cellSize;
         int offset = (int)cellSize / 2;
-        int posX = (int)_pos.position.x;
-        int posY = (int)_pos.position.y - offset;
-        //Debug.Log(posX.ToString() + ", " + posY.ToString());
+        int x = (int)_pos.position.x / cellSize;
+        int y = (int)(_pos.position.y - offset) / cellSize;
 
-        int x = posX / cellSize, y = posY / cellSize;
-
-        //Debug.Log("Cell: " + x + ", " + y);
         for (int i = 0; i < 3; i++)
         {
-            if (i != 0)
-            {
-                StartCoroutine(Wait(CommonFunction.Instance.crackInterval));
-            }
             switch (_dir)
             {
                 case dDirection.dUp_Up:
@@ -429,6 +434,8 @@ public class PlayerController : MonoBehaviour
                     break;
             }
 
+            Debug.Log("pass");
+            Debug.Log("Cell: " + x + ", " + y);
             if (x < 0 || y < 0 || x >= CommonFunction.Instance.MapWidth || y >= CommonFunction.Instance.MapHeight)
             {
                 break;
@@ -440,14 +447,20 @@ public class PlayerController : MonoBehaviour
             //}
             GameObject crack = GameObject.Instantiate(CommonFunction.Instance.LoadSkill(_dir));
             crack.transform.position = new Vector3(x * cellSize + offset, y * cellSize + offset, 0);
+
+            /*
+            if (_i != 0)
+            {
+                yield return new WaitForSeconds(CommonFunction.Instance.crackInterval);
+                WaitForGenerate(_pos, _dir, _i + 1);
+            }
+            else
+            {
+                WaitForGenerate(_pos, _dir, _i + 1);
+            }
+            */
+            yield return new WaitForSeconds(CommonFunction.Instance.crackInterval);
         }
-    }
-    #endregion
-
-
-    IEnumerator Wait(float _time)
-    {
-        yield return new WaitForSeconds(_time);
     }
 
 }

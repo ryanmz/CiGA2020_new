@@ -220,11 +220,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 500
   currentDir: 7
+<<<<<<< HEAD
   fallTime: 1
   fallSpeed: 200
   pauseFallTime: 3
   undmgTime: 0
   fall: 0
+=======
+>>>>>>> c91b70d2f7de84ebf4e6a538f430277af5de9e61
   isPlayerOne: 1
   animListIdle:
   - {fileID: 7400000, guid: 3c4ac92893f47084799abea003fc25ca, type: 2}
@@ -409,7 +412,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1912980544}
   m_Layer: 0
-  m_Name: RuleManager
+  m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
