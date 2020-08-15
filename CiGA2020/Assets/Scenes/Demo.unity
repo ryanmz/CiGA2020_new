@@ -220,6 +220,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 500
   currentDir: 7
+  isRun: 0
+  isPlayerOne: 1
   animListIdle:
   - {fileID: 7400000, guid: 3c4ac92893f47084799abea003fc25ca, type: 2}
   - {fileID: 7400000, guid: 9a814ce87e62d26439d65618fcad9b8f, type: 2}
@@ -227,11 +229,11 @@ MonoBehaviour:
   - {fileID: 7400000, guid: 2743378a6fdf75a4fb2d8f24129a43aa, type: 2}
   - {fileID: 7400000, guid: 5608a3d9387392446a5ae588851a3c26, type: 2}
   animListRun:
-  - {fileID: 7400000, guid: 3c4ac92893f47084799abea003fc25ca, type: 2}
-  - {fileID: 7400000, guid: 9a814ce87e62d26439d65618fcad9b8f, type: 2}
-  - {fileID: 7400000, guid: ef37afe246845b54482dc4dc86c666d5, type: 2}
-  - {fileID: 7400000, guid: 2743378a6fdf75a4fb2d8f24129a43aa, type: 2}
-  - {fileID: 7400000, guid: 5608a3d9387392446a5ae588851a3c26, type: 2}
+  - {fileID: 7400000, guid: 4027de11fc5e7094f8230f3248797641, type: 2}
+  - {fileID: 7400000, guid: 134f2df6a0065184bbdc339ba018905e, type: 2}
+  - {fileID: 7400000, guid: add22865f9076b84fa722a5af42d3f26, type: 2}
+  - {fileID: 7400000, guid: 62b1e03e873bf0d40b792df2a933349d, type: 2}
+  - {fileID: 7400000, guid: 14abb5079e48e4c4890aa8a6ba3719ef, type: 2}
   animListAttack:
   - {fileID: 7400000, guid: 725a740d970ae6c488997cd0953c0c43, type: 2}
   - {fileID: 7400000, guid: dc7194f9404f0fd47b436a7e22aed280, type: 2}
