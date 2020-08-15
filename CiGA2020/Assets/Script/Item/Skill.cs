@@ -71,35 +71,39 @@ public class Skill : MonoBehaviour
     {
         if (currentDir == dDirection.dDown_Down)
         {
-            this.animOverride["0"] = this.list[0];
+            this.animOverride["Born"] = this.list[0];
         }
         else if (currentDir == dDirection.dUp_Up)
         {
-            this.animOverride["0"] = this.list[1];
+            this.animOverride["Born"] = this.list[0];
         }
         else if (currentDir == dDirection.dLeft_Left)
         {
-            this.animOverride["0"] = this.list[2];
+            this.animOverride["Born"] = this.list[1];
         }
         else if (currentDir == dDirection.dRight_Right)
         {
-            this.animOverride["0"] = this.list[2];
+            this.animOverride["Born"] = this.list[1];
         }
         else if (currentDir == dDirection.dUp_Left)
         {
-            this.animOverride["0"] = this.list[2];
+            this.animOverride["Born"] = this.list[2];
+            this.transform.localScale = new Vector3(-this.transform.localScale.x, this.transform.localScale.y, this.transform.localScale.z);
         }
         else if (currentDir == dDirection.dUp_Right)
         {
-            this.animOverride["0"] = this.list[2];
+            this.animOverride["Born"] = this.list[3];
+            this.transform.localScale = new Vector3(this.transform.localScale.x, this.transform.localScale.y, this.transform.localScale.z);
         }
         else if (currentDir == dDirection.dDown_Left)
         {
-            this.animOverride["0"] = this.list[2];
+            this.animOverride["Born"] = this.list[3];
+            this.transform.localScale = new Vector3(this.transform.localScale.x, this.transform.localScale.y, this.transform.localScale.z);
         }
         else if (currentDir == dDirection.dDown_Right)
         {
-            this.animOverride["0"] = this.list[2];
+            this.animOverride["Born"] = this.list[2];
+            this.transform.localScale = new Vector3(-this.transform.localScale.x, this.transform.localScale.y, this.transform.localScale.z);
         }
     }
 
