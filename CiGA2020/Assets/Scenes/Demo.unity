@@ -131,9 +131,10 @@ GameObject:
   m_Component:
   - component: {fileID: 30631897}
   - component: {fileID: 30631896}
-  - component: {fileID: 30631898}
   - component: {fileID: 30631899}
   - component: {fileID: 30631900}
+  - component: {fileID: 30631901}
+  - component: {fileID: 30631898}
   m_Layer: 0
   m_Name: character
   m_TagString: Player
@@ -180,7 +181,7 @@ SpriteRenderer:
   m_SortingLayerID: -558015163
   m_SortingLayer: 2
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: 7257fd9c10a855e44adc6ae31069a0ff, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f7956910c53aec14bac3dfea20f2ae77, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -218,7 +219,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 500
-  currentDir: 0
+  currentDir: 7
+  animListIdle:
+  - {fileID: 7400000, guid: 3c4ac92893f47084799abea003fc25ca, type: 2}
+  - {fileID: 7400000, guid: 9a814ce87e62d26439d65618fcad9b8f, type: 2}
+  - {fileID: 7400000, guid: ef37afe246845b54482dc4dc86c666d5, type: 2}
+  - {fileID: 7400000, guid: 2743378a6fdf75a4fb2d8f24129a43aa, type: 2}
+  - {fileID: 7400000, guid: 5608a3d9387392446a5ae588851a3c26, type: 2}
+  animListRun:
+  - {fileID: 7400000, guid: 3c4ac92893f47084799abea003fc25ca, type: 2}
+  - {fileID: 7400000, guid: 9a814ce87e62d26439d65618fcad9b8f, type: 2}
+  - {fileID: 7400000, guid: ef37afe246845b54482dc4dc86c666d5, type: 2}
+  - {fileID: 7400000, guid: 2743378a6fdf75a4fb2d8f24129a43aa, type: 2}
+  - {fileID: 7400000, guid: 5608a3d9387392446a5ae588851a3c26, type: 2}
+  animListAttack:
+  - {fileID: 7400000, guid: 725a740d970ae6c488997cd0953c0c43, type: 2}
+  - {fileID: 7400000, guid: dc7194f9404f0fd47b436a7e22aed280, type: 2}
+  - {fileID: 7400000, guid: e5554edddffc58147a9ea7f432772e8d, type: 2}
+  - {fileID: 7400000, guid: 89f15c494dd5bb74ebb6383a4c64d275, type: 2}
+  - {fileID: 7400000, guid: faa0a691a48363f4ab76270bc6381a0b, type: 2}
 --- !u!61 &30631899
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -236,7 +255,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.6, y: 1.6}
+    oldSize: {x: 5.12, y: 5.12}
     newSize: {x: 5.12, y: 5.12}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -266,6 +285,25 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!95 &30631901
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 30631895}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 975a3b10633f86e4a876c421782f8b65, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0

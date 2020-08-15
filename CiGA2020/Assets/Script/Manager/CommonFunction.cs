@@ -20,39 +20,39 @@ public class CommonFunction : Singleton<CommonFunction>
     {
         if (dir == dDirection.dNone)
         {
-           return Resources.Load("Temp/map1", typeof(Sprite)) as Sprite;
+           return Resources.Load("Character/Idle/hero_idle_left", typeof(Sprite)) as Sprite;
         }
         else if (dir == dDirection.dUp_Up)
         {
-            return Resources.Load("Temp/map1", typeof(Sprite)) as Sprite;
+            return Resources.Load("Character/Idle/hero_idle_back", typeof(Sprite)) as Sprite;
         }
         else if (dir == dDirection.dDown_Down)
         {
-            return Resources.Load("Temp/map1", typeof(Sprite)) as Sprite;
+            return Resources.Load("Character/Idle/hero_idle_front", typeof(Sprite)) as Sprite;
         }
         else if (dir == dDirection.dLeft_Left)
         {
-            return Resources.Load("Temp/map1", typeof(Sprite)) as Sprite;
+            return Resources.Load("Character/Idle/hero_idle_left", typeof(Sprite)) as Sprite;
         }
         else if (dir == dDirection.dRight_Right)
         {
-            return Resources.Load("Temp/map1", typeof(Sprite)) as Sprite;
+            return Resources.Load("Character/Idle/hero_idle_left", typeof(Sprite)) as Sprite;
         }
         else if (dir == dDirection.dUp_Left)
         {
-            return Resources.Load("Temp/map1", typeof(Sprite)) as Sprite;
+            return Resources.Load("Character/Idle/hero_idle_topleft", typeof(Sprite)) as Sprite;
         }
         else if (dir == dDirection.dUp_Right)
         {
-            return Resources.Load("Temp/map1", typeof(Sprite)) as Sprite;
+            return Resources.Load("Character/Idle/hero_idle_topleft", typeof(Sprite)) as Sprite;
         }
         else if (dir == dDirection.dDown_Left)
         {
-            return Resources.Load("Temp/map1", typeof(Sprite)) as Sprite;
+            return Resources.Load("Character/Idle/hero_idle_bottomleft", typeof(Sprite)) as Sprite;
         }
         else if (dir == dDirection.dDown_Right)
         {
-            return Resources.Load("Temp/map1", typeof(Sprite)) as Sprite;
+            return Resources.Load("Character/Idle/hero_idle_bottomleft", typeof(Sprite)) as Sprite;
         }
         return null;
     }
