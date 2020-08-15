@@ -52,14 +52,22 @@ public class PlayerController : MonoBehaviour
     //角色控制
     private void ControllerA()
     {
+        //AnimatorStateInfo animStateInfo = anim.GetCurrentAnimatorStateInfo(0);
+        //if (animStateInfo.normalizedTime < 1.0f && animStateInfo.IsName("Attack"))
+        //    return;
+
+
         if (Input.GetKey(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.LeftControl))
         {
             this.AttackA(this.currentDir);
         }
         else
         {
-            this.DirectA();
-            this.Anim(this.currentDir);
+
+                this.DirectA();
+                this.Anim(this.currentDir);
+            
+
         }
     }
 
@@ -285,8 +293,6 @@ public class PlayerController : MonoBehaviour
         this.anim.runtimeAnimatorController = animOverride;
     }
     #endregion
-
-
 
     // 生成裂缝
     #region
