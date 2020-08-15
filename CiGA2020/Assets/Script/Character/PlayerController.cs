@@ -401,11 +401,11 @@ public class PlayerController : MonoBehaviour
         //int offset = (int)cellSize / 2;
         //int posX = (int)_pos.position.x;
         //int posY = (int)_pos.position.y - offset;
-        // int x = posX / cellSize, y = posY / cellSize;
+        //int x = posX / cellSize, y = posY / cellSize;
 
         StartCoroutine(WaitForGenerate(_pos, _dir));
     }
-    #endregion
+
 
 
     IEnumerator WaitForGenerate(Transform _pos, dDirection _dir)
@@ -447,8 +447,7 @@ public class PlayerController : MonoBehaviour
                 break;
             }
 
-            // new
-            Debug.Log(x + ", " + y);
+            //Debug.Log(x + ", " + y);
             dCellType[,] tMap = GameObject.Find("GameManager").GetComponent<GameManager>().map;
             GameObject[,] objects = GameObject.Find("GameManager").GetComponent<GameManager>().obj;
 
@@ -466,7 +465,6 @@ public class PlayerController : MonoBehaviour
             GameObject crack = GameObject.Instantiate(CommonFunction.Instance.LoadSkill(_dir, tMap[x, y]));
             crack.transform.position = new Vector3(x * cellSize + offset, y * cellSize + offset, 0);
 
-            // new
             //crack.GetComponent<Skill>().cellType = tMap[x, y];
             if (objects[x, y] == null)
             {
@@ -478,19 +476,10 @@ public class PlayerController : MonoBehaviour
                 objects[x, y] = crack;
             }
 
-            /*
-            if (_i != 0)
-            {
-                yield return new WaitForSeconds(CommonFunction.Instance.crackInterval);
-                WaitForGenerate(_pos, _dir, _i + 1);
-            }
-            else
-            {
-                WaitForGenerate(_pos, _dir, _i + 1);
-            }
-            */
             yield return new WaitForSeconds(CommonFunction.Instance.crackInterval);
         }
     }
+    #endregion
+
 
 }
