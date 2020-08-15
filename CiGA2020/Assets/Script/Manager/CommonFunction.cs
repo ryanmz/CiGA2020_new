@@ -63,5 +63,43 @@ public class CommonFunction : Singleton<CommonFunction>
     }
 
 
+    public Vector2 TranslateDirection(dDirection dir)
+    {
+        Vector2 v = new Vector2();
+        if (dir == dDirection.dDown_Down)
+        {
+            v = new Vector2(0.0f, -1.0f);
+        }
+        else if (dir == dDirection.dDown_Left)
+        {
+            v = new Vector2(-1.0f, -1.0f);
+        }
+        else if (dir == dDirection.dLeft_Left)
+        {
+            v = new Vector2(-1.0f, 0.0f);
+        }
+        else if (dir == dDirection.dUp_Left)
+        {
+            v = new Vector2(-1.0f, 1.0f);
+        }
+        else if (dir == dDirection.dUp_Up)
+        {
+            v = new Vector2(0.0f, 1.0f);
+        }
+        else if (dir == dDirection.dUp_Right)
+        {
+            v = new Vector2(1.0f, 1.0f);
+        }
+        else if (dir == dDirection.dRight_Right)
+        {
+            v = new Vector2(1.0f, 0.0f);
+        }
+        else if (dir == dDirection.dDown_Right)
+        {
+            v = new Vector2(1.0f, -1.0f);
+        }
+        return v.normalized;
+    }
+
 
 }

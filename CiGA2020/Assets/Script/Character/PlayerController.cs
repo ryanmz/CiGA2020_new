@@ -6,8 +6,20 @@ public class PlayerController : MonoBehaviour
 {
     //数据管理
     #region
+    //位移数据
     public float speed;
     public dDirection currentDir;
+
+    //摔倒数据
+    
+    public float fallTime;
+    public float fallSpeed;
+    public float pauseFallTime;
+    public float undmgTime;
+    public bool fall;
+
+
+    private float recordTime = 0.0f;
     #endregion
 
     public bool isPlayerOne = true;//判断1P还是2P
@@ -15,6 +27,7 @@ public class PlayerController : MonoBehaviour
     public AnimationClip[] animListIdle;
     public AnimationClip[] animListRun;
     public AnimationClip[] animListAttack;
+    public AnimationClip[] animListFall;
     protected Animator anim;
     protected AnimatorOverrideController animOverride;
     protected SpriteRenderer sprite;
@@ -52,42 +65,52 @@ public class PlayerController : MonoBehaviour
     //角色控制
     private void ControllerA()
     {
-        //AnimatorStateInfo animStateInfo = anim.GetCurrentAnimatorStateInfo(0);
-        //if (animStateInfo.normalizedTime < 1.0f && animStateInfo.IsName("Attack"))
-        //    return;
+        
+        AnimatorStateInfo animStateInfo = anim.GetCurrentAnimatorStateInfo(0);
+        Debug.Log("Run"+animStateInfo.IsName("Run"));
+        Debug.Log("Idle"+animStateInfo.IsName("Idle"));
+        Debug.Log("Attack" + animStateInfo.IsName("Attack"));
+        Debug.Log("Fall"+animStateInfo.IsName("Fall"));
+        if (!animStateInfo.IsName("Attack") && !animStateInfo.IsName("Fall"))
+        {
+            this.InputA();//角色动画输入
+
+            this.AnimSetUp(this.currentDir);//角色动画选择
+        }
+        if (animStateInfo.IsName("Fall"))
+        {
+            this.Fall();
+        }
+    }
+
+    private void ControllerB()
+    {
+        //this.FallAnim(this.fall);
+        AnimatorStateInfo animStateInfo = anim.GetCurrentAnimatorStateInfo(0);
+        if (!animStateInfo.IsName("Attack")&&!animStateInfo.IsName("Fall"))
+        {
+            this.InputB();//角色动画输入
+
+            this.AnimSetUp(this.currentDir);//角色动画选择
+        }
+        else if (animStateInfo.IsName("Fall"))
+        {
+            this.Fall();
+        }
 
 
+    }
+
+    //角色方向
+    private void InputA()
+    {
+        Vector2 v = new Vector2();
         if (Input.GetKey(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.LeftControl))
         {
             this.AttackA(this.currentDir);
         }
         else
         {
-
-                this.DirectA();
-                this.Anim(this.currentDir);
-            
-
-        }
-    }
-
-    private void ControllerB()
-    {
-        if (Input.GetKey(KeyCode.J) || Input.GetKeyDown(KeyCode.J))
-        {
-            this.AttackB(this.currentDir);
-        }
-        else
-        {
-            this.DirectB();
-            this.Anim(this.currentDir);
-        }
-    }
-
-    //角色方向
-    private void DirectA()
-    {
-            Vector2 v = new Vector2();
             if (Input.GetKey(KeyCode.W) && !(Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D)))//向直上
             {
                 this.currentDir = dDirection.dUp_Up;
@@ -132,112 +155,141 @@ public class PlayerController : MonoBehaviour
             {
                 v = new Vector2(0.0f, 0.0f);
             }
-            this.Move(v, this.currentDir);
+            this.Move(v,this.speed);
+            anim.SetFloat("Speed", v.magnitude);
+        }
+
+        if (this.fall)
+        {
+            anim.SetTrigger("Fall");
+            this.fall = false;
+        }
     }
 
-    private void DirectB()
+    private void InputB()
     {
         Vector2 v = new Vector2();
-        if (Input.GetKey(KeyCode.UpArrow) && !(Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow)))//向直上
+        if (Input.GetKey(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.LeftControl))
         {
-            this.currentDir = dDirection.dUp_Up;
-            v = new Vector2(0.0f, 1.0f);
-        }
-        else if (Input.GetKey(KeyCode.DownArrow) && !(Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow)))//向直下
-        {
-            this.currentDir = dDirection.dDown_Down;
-            v = new Vector2(0.0f, -1.0f);
-        }
-        else if (Input.GetKey(KeyCode.LeftArrow) && !(Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.UpArrow)))//向直左
-        {
-            this.currentDir = dDirection.dLeft_Left;
-            v = new Vector2(-1.0f, 0.0f);
-        }
-        else if (Input.GetKey(KeyCode.RightArrow) && !(Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.UpArrow)))//向直右
-        {
-            this.currentDir = dDirection.dRight_Right;
-            v = new Vector2(1.0f, 0.0f);
-        }
-        else if (Input.GetKey(KeyCode.LeftArrow) && Input.GetKey(KeyCode.UpArrow))//向左上
-        {
-            this.currentDir = dDirection.dUp_Left;
-            v = new Vector2(-1.0f, 1.0f);
-        }
-        else if (Input.GetKey(KeyCode.RightArrow) && Input.GetKey(KeyCode.UpArrow))//向右上
-        {
-            this.currentDir = dDirection.dUp_Right;
-            v = new Vector2(1.0f, 1.0f);
-        }
-        else if (Input.GetKey(KeyCode.LeftArrow) && Input.GetKey(KeyCode.DownArrow))//向左下
-        {
-            this.currentDir = dDirection.dDown_Left;
-            v = new Vector2(-1.0f, -1.0f);
-        }
-        else if (Input.GetKey(KeyCode.RightArrow) && Input.GetKey(KeyCode.DownArrow))//向右下
-        {
-            this.currentDir = dDirection.dDown_Right;
-            v = new Vector2(1.0f, -1.0f);
+            this.AttackA(this.currentDir);
         }
         else
         {
-            v = new Vector2(0.0f, 0.0f);
+            if (Input.GetKey(KeyCode.UpArrow) && !(Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow)))//向直上
+            {
+                this.currentDir = dDirection.dUp_Up;
+                v = new Vector2(0.0f, 1.0f);
+            }
+            else if (Input.GetKey(KeyCode.DownArrow) && !(Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow)))//向直下
+            {
+                this.currentDir = dDirection.dDown_Down;
+                v = new Vector2(0.0f, -1.0f);
+            }
+            else if (Input.GetKey(KeyCode.LeftArrow) && !(Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.UpArrow)))//向直左
+            {
+                this.currentDir = dDirection.dLeft_Left;
+                v = new Vector2(-1.0f, 0.0f);
+            }
+            else if (Input.GetKey(KeyCode.RightArrow) && !(Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.UpArrow)))//向直右
+            {
+                this.currentDir = dDirection.dRight_Right;
+                v = new Vector2(1.0f, 0.0f);
+            }
+            else if (Input.GetKey(KeyCode.LeftArrow) && Input.GetKey(KeyCode.UpArrow))//向左上
+            {
+                this.currentDir = dDirection.dUp_Left;
+                v = new Vector2(-1.0f, 1.0f);
+            }
+            else if (Input.GetKey(KeyCode.RightArrow) && Input.GetKey(KeyCode.UpArrow))//向右上
+            {
+                this.currentDir = dDirection.dUp_Right;
+                v = new Vector2(1.0f, 1.0f);
+            }
+            else if (Input.GetKey(KeyCode.LeftArrow) && Input.GetKey(KeyCode.DownArrow))//向左下
+            {
+                this.currentDir = dDirection.dDown_Left;
+                v = new Vector2(-1.0f, -1.0f);
+            }
+            else if (Input.GetKey(KeyCode.RightArrow) && Input.GetKey(KeyCode.DownArrow))//向右下
+            {
+                this.currentDir = dDirection.dDown_Right;
+                v = new Vector2(1.0f, -1.0f);
+            }
+            else
+            {
+                v = new Vector2(0.0f, 0.0f);
+            }
+            this.Move(v,this.speed);
+            anim.SetFloat("Speed", v.magnitude);
         }
-        this.Move(v, this.currentDir);
+ 
+        if (this.fall)
+        {
+            anim.SetTrigger("Fall");
+            this.fall = false;
+        }
     }
 
     //角色攻击
     private void AttackA(dDirection dir)
     {
-            if (Input.GetKeyDown(KeyCode.LeftControl))
-            {
+        if (Input.GetKeyDown(KeyCode.LeftControl))
+        {
+            AnimatorStateInfo animStateInfo = anim.GetCurrentAnimatorStateInfo(0);
+            if (animStateInfo.IsName("Run"))
+                anim.SetFloat("Speed", 1.0f);
+            else if (animStateInfo.IsName("Idle"))
+                anim.SetFloat("Speed", 0.0f);
 
-                anim.SetTrigger("Attack");
-                Vector2 v = new Vector2(0, 0);
-                this.Move(v, this.currentDir);
-
+            anim.SetTrigger("Attack");
+            Vector2 v = new Vector2(0, 0);
+            this.Move(v,this.speed);
+           
             this.GenerateCrack(this.transform, this.currentDir);
             return;
 
-            }
+        }
     }
 
     private void AttackB(dDirection dir)
     {
         if (Input.GetKeyDown(KeyCode.J))
         {
-            /*
-            GameObject crack = GameObject.Instantiate(CommonFunction.Instance.LoadSkill(dir));
-
-            crack.transform.position = this.transform.position;
-            */
-
+            AnimatorStateInfo animStateInfo = anim.GetCurrentAnimatorStateInfo(0);
+            if (animStateInfo.IsName("Run"))
+                anim.SetFloat("Speed", 1.0f);
+            else if (animStateInfo.IsName("Idle"))
+                anim.SetFloat("Speed", 0.0f);
 
             anim.SetTrigger("Attack");
             Vector2 v = new Vector2(0, 0);
-            this.Move(v, this.currentDir);
+            this.Move(v,this.speed);
 
+
+            anim.SetFloat("Speed", 0.1f);
             this.GenerateCrack(this.transform, this.currentDir);
             return;
         }
     }
 
     //角色的位移
-    private void Move(Vector2 v,dDirection dir)
+    private void Move(Vector2 v,float tSpeed)
     {
         
-        v = v.normalized * speed* Time.deltaTime;
+        v = v.normalized * tSpeed * Time.deltaTime;
         this.transform.Translate(v);
-        anim.SetFloat("Speed", v.magnitude);
+        
     }
 
-    //角色动画
-    private void Anim(dDirection dir)
+    //角色位移动画
+    private void AnimSetUp(dDirection dir)
     {
         if (dir == dDirection.dUp_Up)
         {
             this.animOverride["Idle"] = this.animListIdle[0];
             this.animOverride["Run"] = this.animListRun[0];
             this.animOverride["Attack"] = this.animListAttack[0];
+            this.animOverride["Fall"] = this.animListFall[0];
             this.transform.localScale = new Vector3(50.0f, 50.0f, 1.0f);
         }
         else if(dir == dDirection.dUp_Left)
@@ -245,6 +297,7 @@ public class PlayerController : MonoBehaviour
             this.animOverride["Idle"] = this.animListIdle[1];
             this.animOverride["Run"] = this.animListRun[1];
             this.animOverride["Attack"] = this.animListAttack[1];
+            this.animOverride["Fall"] = this.animListFall[1];
             this.transform.localScale = new Vector3(50.0f, 50.0f, 1.0f);
         }
         else if (dir == dDirection.dLeft_Left)
@@ -252,6 +305,7 @@ public class PlayerController : MonoBehaviour
             this.animOverride["Idle"] = this.animListIdle[2];
             this.animOverride["Run"] = this.animListRun[2];
             this.animOverride["Attack"] = this.animListAttack[2];
+            this.animOverride["Fall"] = this.animListFall[2];
             this.transform.localScale = new Vector3(50.0f, 50.0f, 1.0f);
         }
         else if (dir == dDirection.dDown_Left)
@@ -259,6 +313,7 @@ public class PlayerController : MonoBehaviour
             this.animOverride["Idle"] = this.animListIdle[3];
             this.animOverride["Run"] = this.animListRun[3];
             this.animOverride["Attack"] = this.animListAttack[3];
+            this.animOverride["Fall"] = this.animListFall[3];
             this.transform.localScale = new Vector3(50.0f, 50.0f, 1.0f);
         }
         else if (dir == dDirection.dDown_Down)
@@ -266,6 +321,7 @@ public class PlayerController : MonoBehaviour
             this.animOverride["Idle"] = this.animListIdle[4];
             this.animOverride["Run"] = this.animListRun[4];
             this.animOverride["Attack"] = this.animListAttack[4];
+            this.animOverride["Fall"] = this.animListFall[4];
             this.transform.localScale = new Vector3(50.0f, 50.0f, 1.0f);
         }
         else if (dir == dDirection.dDown_Right)
@@ -273,6 +329,7 @@ public class PlayerController : MonoBehaviour
             this.animOverride["Idle"] = this.animListIdle[3];
             this.animOverride["Run"] = this.animListRun[3];
             this.animOverride["Attack"] = this.animListAttack[3];
+            this.animOverride["Fall"] = this.animListFall[3];
             this.transform.localScale = new Vector3(-50.0f, 50.0f, 1.0f);
         }
         else if (dir == dDirection.dRight_Right)
@@ -280,6 +337,7 @@ public class PlayerController : MonoBehaviour
             this.animOverride["Idle"] = this.animListIdle[2];
             this.animOverride["Run"] = this.animListRun[2];
             this.animOverride["Attack"] = this.animListAttack[2];
+            this.animOverride["Fall"] = this.animListFall[2];
             this.transform.localScale = new Vector3(-50.0f, 50.0f, 1.0f);
         }
         else if (dir == dDirection.dUp_Right)
@@ -287,6 +345,7 @@ public class PlayerController : MonoBehaviour
             this.animOverride["Idle"] = this.animListIdle[1];
             this.animOverride["Run"] = this.animListRun[1];
             this.animOverride["Attack"] = this.animListAttack[1];
+            this.animOverride["Fall"] = this.animListFall[1];
             this.transform.localScale = new Vector3(-50.0f, 50.0f, 1.0f);
         }
 
@@ -294,6 +353,40 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
+    //角色动画进行
+    private void AnimHandler()
+    {
+        AnimatorStateInfo animStateInfo = anim.GetCurrentAnimatorStateInfo(0);
+        if (animStateInfo.IsName("Attack")&&animStateInfo.normalizedTime<1.0f)
+        {
+            Vector2 v = new Vector2(0.0f, 0.0f);
+            this.Move(v,this.speed);
+            
+        }
+    }
+
+    //角色摔倒
+    private void Fall()
+    {
+        this.recordTime += Time.deltaTime;
+        if (this.recordTime >= this.fallTime)
+        {
+            Vector2 v = new Vector2(0.0f,0.0f);
+            this.Move(v, this.fallSpeed);
+            if (this.recordTime >= this.pauseFallTime)
+            {
+                anim.SetFloat("PauseTime", this.pauseFallTime);
+                this.recordTime = 0.0f;
+            }
+
+        }
+        else
+        {
+            Vector2 v = CommonFunction.Instance.TranslateDirection(this.currentDir);
+            this.Move(v, this.fallSpeed);
+
+        }
+    }
     // 生成裂缝
     #region
     public void GenerateCrack(Transform _pos, dDirection _dir)
