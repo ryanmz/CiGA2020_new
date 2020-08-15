@@ -155,7 +155,6 @@
     <Compile Include="Assets\Script\Item\Skill.cs" />
     <Compile Include="Assets\Script\Manager\CommonEnum.cs" />
     <Compile Include="Assets\Script\Manager\CommonFunction.cs" />
-    <Compile Include="Assets\Script\Manager\RuleManager.cs" />
     <Compile Include="Assets\Script\Manager\ZSortObject.cs" />
     <Compile Include="Assets\Script\Singleton\Singleton.cs" />
     <Compile Include="Assets\Script\qmzTest\ChangeOrder.cs" />
