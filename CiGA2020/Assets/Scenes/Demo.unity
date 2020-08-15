@@ -220,7 +220,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 500
   currentDir: 7
-  isRun: 0
+  fallTime: 1
+  fallSpeed: 200
+  pauseFallTime: 3
+  undmgTime: 0
+  fall: 0
   isPlayerOne: 1
   animListIdle:
   - {fileID: 7400000, guid: 3c4ac92893f47084799abea003fc25ca, type: 2}
@@ -240,6 +244,12 @@ MonoBehaviour:
   - {fileID: 7400000, guid: e5554edddffc58147a9ea7f432772e8d, type: 2}
   - {fileID: 7400000, guid: 89f15c494dd5bb74ebb6383a4c64d275, type: 2}
   - {fileID: 7400000, guid: faa0a691a48363f4ab76270bc6381a0b, type: 2}
+  animListFall:
+  - {fileID: 7400000, guid: ad76477e0c15bdf4b95d8d99144ad7ad, type: 2}
+  - {fileID: 7400000, guid: 4c27fb15f0c172c4fb2249d2ab006bd2, type: 2}
+  - {fileID: 7400000, guid: 5d6972a5a4f95a84e995d7776139157d, type: 2}
+  - {fileID: 7400000, guid: 6d84a783eda4ac640b25691e3619727d, type: 2}
+  - {fileID: 7400000, guid: 3341256b90d5c5c479ac4b119eb0536d, type: 2}
 --- !u!61 &30631899
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -481,7 +491,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 5, y: 5}
+  m_Size: {x: 3.7, y: 3.7}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
