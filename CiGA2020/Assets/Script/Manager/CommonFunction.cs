@@ -53,4 +53,7 @@ public class CommonFunction : Singleton<CommonFunction>
         GameObject tem = (GameObject)Resources.Load("Prefabs/crackPrefab");
         return tem;
     }
+
+
+
 }
