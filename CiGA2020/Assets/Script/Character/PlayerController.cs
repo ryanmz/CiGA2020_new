@@ -10,6 +10,8 @@ public class PlayerController : MonoBehaviour
     public dDirection currentDir;
     #endregion
 
+    public bool isPlayerOne = true;//判断1P还是2P
+
     public AnimationClip[] animListIdle;
     public AnimationClip[] animListRun;
     public AnimationClip[] animListAttack;
@@ -32,7 +34,14 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        this.ControllerA();
+        if(isPlayerOne)
+        {
+            this.ControllerA();
+        }
+        else
+        {
+            this.ControllerB();
+        }
 
     }
     #endregion
@@ -43,7 +52,6 @@ public class PlayerController : MonoBehaviour
     //角色控制
     private void ControllerA()
     {
-        
         if (Input.GetKey(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.LeftControl))
         {
             this.AttackA(this.currentDir);
@@ -55,46 +63,109 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void ControllerB()
+    {
+        if (Input.GetKey(KeyCode.J) || Input.GetKeyDown(KeyCode.J))
+        {
+            this.AttackB(this.currentDir);
+        }
+        else
+        {
+            this.DirectB();
+            this.Anim(this.currentDir);
+        }
+    }
+
     //角色方向
     private void DirectA()
     {
+            Vector2 v = new Vector2();
+            if (Input.GetKey(KeyCode.W) && !(Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D)))//向直上
+            {
+                this.currentDir = dDirection.dUp_Up;
+                v = new Vector2(0.0f, 1.0f);
+            }
+            else if (Input.GetKey(KeyCode.S) && !(Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D)))//向直下
+            {
+                this.currentDir = dDirection.dDown_Down;
+                v = new Vector2(0.0f, -1.0f);
+            }
+            else if (Input.GetKey(KeyCode.A) && !(Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.W)))//向直左
+            {
+                this.currentDir = dDirection.dLeft_Left;
+                v = new Vector2(-1.0f, 0.0f);
+            }
+            else if (Input.GetKey(KeyCode.D) && !(Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.W)))//向直右
+            {
+                this.currentDir = dDirection.dRight_Right;
+                v = new Vector2(1.0f, 0.0f);
+            }
+            else if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.W))//向左上
+            {
+                this.currentDir = dDirection.dUp_Left;
+                v = new Vector2(-1.0f, 1.0f);
+            }
+            else if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.W))//向右上
+            {
+                this.currentDir = dDirection.dUp_Right;
+                v = new Vector2(1.0f, 1.0f);
+            }
+            else if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.S))//向左下
+            {
+                this.currentDir = dDirection.dDown_Left;
+                v = new Vector2(-1.0f, -1.0f);
+            }
+            else if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.S))//向右下
+            {
+                this.currentDir = dDirection.dDown_Right;
+                v = new Vector2(1.0f, -1.0f);
+            }
+            else
+            {
+                v = new Vector2(0.0f, 0.0f);
+            }
+            this.Move(v, this.currentDir);
+    }
+
+    private void DirectB()
+    {
         Vector2 v = new Vector2();
-        if (Input.GetKey(KeyCode.W)&& !(Input.GetKey(KeyCode.A)|| Input.GetKey(KeyCode.D)))//向直上
+        if (Input.GetKey(KeyCode.UpArrow) && !(Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow)))//向直上
         {
             this.currentDir = dDirection.dUp_Up;
             v = new Vector2(0.0f, 1.0f);
         }
-        else if (Input.GetKey(KeyCode.S) && !(Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D)))//向直下
+        else if (Input.GetKey(KeyCode.DownArrow) && !(Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow)))//向直下
         {
             this.currentDir = dDirection.dDown_Down;
             v = new Vector2(0.0f, -1.0f);
         }
-        else if (Input.GetKey(KeyCode.A)&& !(Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.W)))//向直左
+        else if (Input.GetKey(KeyCode.LeftArrow) && !(Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.UpArrow)))//向直左
         {
             this.currentDir = dDirection.dLeft_Left;
             v = new Vector2(-1.0f, 0.0f);
         }
-        else if (Input.GetKey(KeyCode.D) && !(Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.W)))//向直右
+        else if (Input.GetKey(KeyCode.RightArrow) && !(Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.UpArrow)))//向直右
         {
             this.currentDir = dDirection.dRight_Right;
             v = new Vector2(1.0f, 0.0f);
         }
-        else if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.W))//向左上
+        else if (Input.GetKey(KeyCode.LeftArrow) && Input.GetKey(KeyCode.UpArrow))//向左上
         {
             this.currentDir = dDirection.dUp_Left;
             v = new Vector2(-1.0f, 1.0f);
         }
-        else if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.W))//向右上
+        else if (Input.GetKey(KeyCode.RightArrow) && Input.GetKey(KeyCode.UpArrow))//向右上
         {
             this.currentDir = dDirection.dUp_Right;
             v = new Vector2(1.0f, 1.0f);
         }
-        else if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.S))//向左下
+        else if (Input.GetKey(KeyCode.LeftArrow) && Input.GetKey(KeyCode.DownArrow))//向左下
         {
             this.currentDir = dDirection.dDown_Left;
             v = new Vector2(-1.0f, -1.0f);
         }
-        else if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.S))//向右下
+        else if (Input.GetKey(KeyCode.RightArrow) && Input.GetKey(KeyCode.DownArrow))//向右下
         {
             this.currentDir = dDirection.dDown_Right;
             v = new Vector2(1.0f, -1.0f);
@@ -103,16 +174,33 @@ public class PlayerController : MonoBehaviour
         {
             v = new Vector2(0.0f, 0.0f);
         }
-        this.Move(v,this.currentDir);
+        this.Move(v, this.currentDir);
     }
 
     //角色攻击
     private void AttackA(dDirection dir)
     {
-        if (Input.GetKeyDown(KeyCode.LeftControl))
+            if (Input.GetKeyDown(KeyCode.LeftControl))
+            {
+                GameObject crack = GameObject.Instantiate(CommonFunction.Instance.LoadSkill(dir));
+
+                crack.transform.position = this.transform.position;
+
+
+                anim.SetTrigger("Attack");
+                Vector2 v = new Vector2(0, 0);
+                this.Move(v, this.currentDir);
+                return;
+
+            }
+    }
+
+    private void AttackB(dDirection dir)
+    {
+        if (Input.GetKeyDown(KeyCode.J))
         {
             GameObject crack = GameObject.Instantiate(CommonFunction.Instance.LoadSkill(dir));
-            
+
             crack.transform.position = this.transform.position;
 
 
@@ -120,7 +208,6 @@ public class PlayerController : MonoBehaviour
             Vector2 v = new Vector2(0, 0);
             this.Move(v, this.currentDir);
             return;
-            
         }
     }
 
