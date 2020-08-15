@@ -55,6 +55,7 @@ public class CommonFunction : Singleton<CommonFunction>
     public GameObject LoadSkill(dDirection dir)
     {
         GameObject tem = (GameObject)Resources.Load("Prefabs/crackPrefab");
+        tem.GetComponent<Skill>().currentDir = dir;
         return tem;
     }
 
