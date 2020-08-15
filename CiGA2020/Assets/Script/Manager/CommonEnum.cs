@@ -18,3 +18,12 @@ public enum dDamage
     dLevelTwo = 2,
     dLevelThree = 3,
 }
+
+public enum dCellType
+{
+    dNone = 0,
+    dCrack_1 = 1,
+    dCrack_2 = 2,
+    dBlock = 3,
+    dItem = 4,
+}

@@ -210,7 +210,7 @@ public class PlayerController : MonoBehaviour
             Vector2 v = new Vector2(0, 0);
             this.Move(v, this.currentDir);
 
-            CommonFunction.Instance.GenerateCrack(this.transform, this.currentDir);
+            CommonFunction.GenerateCrack(this.transform, this.currentDir);
             return;
         }
     }

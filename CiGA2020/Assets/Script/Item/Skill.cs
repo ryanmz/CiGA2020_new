@@ -56,7 +56,7 @@ public class Skill : MonoBehaviour
     #region
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == CommonFunction.Instance.tagPlayer)
+        if (collision.gameObject.tag == CommonFunction.tagPlayer)
         {
             this.OnDamage();
         }
