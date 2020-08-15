@@ -31,7 +31,7 @@ public class Skill : MonoBehaviour
         this.animOverride = new AnimatorOverrideController(anim.runtimeAnimatorController);
         this.anim.runtimeAnimatorController = this.animOverride;
         this.AnimSelect();
-        anim.runtimeAnimatorController = animOverride;
+        this.anim.runtimeAnimatorController = animOverride;
 
 
     }
