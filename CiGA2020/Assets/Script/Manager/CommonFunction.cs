@@ -54,4 +54,7 @@ public class CommonFunction : Singleton<CommonFunction>
         tem.GetComponent<Skill>().currentDir = dir;
         return tem;
     }
+
+
+
 }
