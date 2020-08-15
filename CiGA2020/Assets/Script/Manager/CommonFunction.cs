@@ -4,22 +4,53 @@ using UnityEngine;
 
 public class CommonFunction : Singleton<CommonFunction>
 {
+    public string tagPlayer = "Player";
+    
 
-    // 改变遮挡关系
-    #region
-    public void ChangeOrder(Collider2D self, Collider2D other)
+    public Sprite LoadSprite(dDirection dir)
     {
-        if (other.transform.position.y < self.transform.position.y)
+        if (dir == dDirection.dNone)
         {
-            other.GetComponent<SpriteRenderer>().sortingOrder = 1;
-            self.GetComponent<SpriteRenderer>().sortingOrder = 0;
+           return Resources.Load("Temp/map1", typeof(Sprite)) as Sprite;
         }
-        else
+        else if (dir == dDirection.dUp_Up)
         {
-            self.GetComponent<SpriteRenderer>().sortingOrder = 1;
-            other.GetComponent<SpriteRenderer>().sortingOrder = 0;
+            return Resources.Load("Temp/map1", typeof(Sprite)) as Sprite;
         }
-
+        else if (dir == dDirection.dDown_Down)
+        {
+            return Resources.Load("Temp/map1", typeof(Sprite)) as Sprite;
+        }
+        else if (dir == dDirection.dLeft_Left)
+        {
+            return Resources.Load("Temp/map1", typeof(Sprite)) as Sprite;
+        }
+        else if (dir == dDirection.dRight_Right)
+        {
+            return Resources.Load("Temp/map1", typeof(Sprite)) as Sprite;
+        }
+        else if (dir == dDirection.dUp_Left)
+        {
+            return Resources.Load("Temp/map1", typeof(Sprite)) as Sprite;
+        }
+        else if (dir == dDirection.dUp_Right)
+        {
+            return Resources.Load("Temp/map1", typeof(Sprite)) as Sprite;
+        }
+        else if (dir == dDirection.dDown_Left)
+        {
+            return Resources.Load("Temp/map1", typeof(Sprite)) as Sprite;
+        }
+        else if (dir == dDirection.dDown_Right)
+        {
+            return Resources.Load("Temp/map1", typeof(Sprite)) as Sprite;
+        }
+        return null;
     }
-    #endregion
+
+    public GameObject LoadSkill(dDirection dir)
+    {
+        GameObject tem = (GameObject)Resources.Load("Prefabs/crackPrefab");
+        return tem;
+    }
 }

@@ -17,7 +17,7 @@ public class ChangeOrder : MonoBehaviour
 
     // 改变遮挡关系
     #region
-    private void OnTriggerStay2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         Debug.Log("Trigger!");
         if (collision.transform.position.y < this.transform.position.y)
