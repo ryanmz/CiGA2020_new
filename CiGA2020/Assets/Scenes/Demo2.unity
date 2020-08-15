@@ -229,6 +229,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 500
   currentDir: 0
+  isPlayerOne: 1
+  animListIdle: []
+  animListRun: []
+  animListAttack: []
 --- !u!212 &29681341
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -401,6 +405,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 500
   currentDir: 0
+  isPlayerOne: 1
+  animListIdle: []
+  animListRun: []
+  animListAttack: []
 --- !u!212 &472374400
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -656,6 +664,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 500
   currentDir: 0
+  isPlayerOne: 1
+  animListIdle: []
+  animListRun: []
+  animListAttack: []
 --- !u!212 &529967893
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -815,6 +827,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 500
   currentDir: 0
+  isPlayerOne: 1
+  animListIdle: []
+  animListRun: []
+  animListAttack: []
 --- !u!212 &583286508
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1000,6 +1016,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 500
   currentDir: 0
+  isPlayerOne: 1
+  animListIdle: []
+  animListRun: []
+  animListAttack: []
 --- !u!212 &665599667
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1172,6 +1192,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 500
   currentDir: 0
+  isPlayerOne: 1
+  animListIdle: []
+  animListRun: []
+  animListAttack: []
 --- !u!212 &1023350269
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1344,6 +1368,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 500
   currentDir: 0
+  isPlayerOne: 1
+  animListIdle: []
+  animListRun: []
+  animListAttack: []
 --- !u!212 &1187738517
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1516,6 +1544,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 500
   currentDir: 0
+  isPlayerOne: 1
+  animListIdle: []
+  animListRun: []
+  animListAttack: []
 --- !u!212 &1289785334
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1688,6 +1720,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 500
   currentDir: 0
+  isPlayerOne: 1
+  animListIdle: []
+  animListRun: []
+  animListAttack: []
 --- !u!212 &1337512438
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1860,6 +1896,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 500
   currentDir: 0
+  isPlayerOne: 1
+  animListIdle: []
+  animListRun: []
+  animListAttack: []
 --- !u!212 &1409077895
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2032,6 +2072,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 500
   currentDir: 0
+  isPlayerOne: 1
+  animListIdle: []
+  animListRun: []
+  animListAttack: []
 --- !u!212 &1807735486
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2285,6 +2329,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 500
   currentDir: 0
+  isPlayerOne: 1
+  animListIdle: []
+  animListRun: []
+  animListAttack: []
 --- !u!212 &2133719238
 SpriteRenderer:
   m_ObjectHideFlags: 0
