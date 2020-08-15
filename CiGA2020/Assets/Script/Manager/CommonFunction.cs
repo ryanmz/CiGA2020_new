@@ -5,6 +5,12 @@ using System.Collections.Generic;
 public class CommonFunction : Singleton<CommonFunction>
 {
     static public string tagPlayer = "Player";
+    public int MapWidth = 30;               // 地图宽度（格子数）
+    public int MapHeight = 16;              // 地图高度（格子数）
+    public int cellSize = 64;               // 格子单位长度
+
+
+    public float crackInterval = 2f;      // 裂缝生成时间间隔
 
     public Sprite LoadSprite(dDirection dir)
     {

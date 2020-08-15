@@ -292,7 +292,7 @@ public class PlayerController : MonoBehaviour
     #region
     public void GenerateCrack(Transform _pos, dDirection _dir)
     {
-        int cellSize = GameManager.Instance.cellSize;
+        int cellSize = CommonFunction.Instance.cellSize;
         int offset = (int)cellSize / 2;
         int posX = (int)_pos.position.x;
         int posY = (int)_pos.position.y - offset;
@@ -305,7 +305,7 @@ public class PlayerController : MonoBehaviour
         {
             if (i != 0)
             {
-                StartCoroutine(Wait(GameManager.Instance.crackInterval));
+                StartCoroutine(Wait(CommonFunction.Instance.crackInterval));
             }
             switch (_dir)
             {
@@ -330,7 +330,7 @@ public class PlayerController : MonoBehaviour
                     break;
             }
 
-            if (x < 0 || y < 0 || x >= GameManager.Instance.MapWidth || y >= GameManager.Instance.MapHeight)
+            if (x < 0 || y < 0 || x >= CommonFunction.Instance.MapWidth || y >= CommonFunction.Instance.MapHeight)
             {
                 break;
             }
