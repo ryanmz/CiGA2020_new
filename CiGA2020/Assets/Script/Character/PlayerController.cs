@@ -182,15 +182,13 @@ public class PlayerController : MonoBehaviour
     {
             if (Input.GetKeyDown(KeyCode.LeftControl))
             {
-                GameObject crack = GameObject.Instantiate(CommonFunction.Instance.LoadSkill(dir));
-
-                crack.transform.position = this.transform.position;
-
 
                 anim.SetTrigger("Attack");
                 Vector2 v = new Vector2(0, 0);
                 this.Move(v, this.currentDir);
-                return;
+
+            this.GenerateCrack(this.transform, this.currentDir);
+            return;
 
             }
     }
@@ -210,7 +208,7 @@ public class PlayerController : MonoBehaviour
             Vector2 v = new Vector2(0, 0);
             this.Move(v, this.currentDir);
 
-            CommonFunction.GenerateCrack(this.transform, this.currentDir);
+            this.GenerateCrack(this.transform, this.currentDir);
             return;
         }
     }
@@ -287,5 +285,70 @@ public class PlayerController : MonoBehaviour
         this.anim.runtimeAnimatorController = animOverride;
     }
     #endregion
+
+
+
+    // 生成裂缝
+    #region
+    public void GenerateCrack(Transform _pos, dDirection _dir)
+    {
+        int cellSize = GameManager.Instance.cellSize;
+        int offset = (int)cellSize / 2;
+        int posX = (int)_pos.position.x;
+        int posY = (int)_pos.position.y - offset;
+        //Debug.Log(posX.ToString() + ", " + posY.ToString());
+
+        int x = posX / cellSize, y = posY / cellSize;
+
+        //Debug.Log("Cell: " + x + ", " + y);
+        for (int i = 0; i < 3; i++)
+        {
+            if (i != 0)
+            {
+                StartCoroutine(Wait(GameManager.Instance.crackInterval));
+            }
+            switch (_dir)
+            {
+                case dDirection.dUp_Up:
+                    y++; break;
+                case dDirection.dUp_Left:
+                    x--; y++; break;
+                case dDirection.dUp_Right:
+                    x++; y++; break;
+                case dDirection.dDown_Down:
+                    y--; break;
+                case dDirection.dDown_Left:
+                    x--; y--; break;
+                case dDirection.dDown_Right:
+                    x++; y--; break;
+                case dDirection.dLeft_Left:
+                    x--; break;
+                case dDirection.dRight_Right:
+                    x++; break;
+                default:
+                    Debug.Log("Crack with No Dir!");
+                    break;
+            }
+
+            if (x < 0 || y < 0 || x >= GameManager.Instance.MapWidth || y >= GameManager.Instance.MapHeight)
+            {
+                break;
+            }
+
+            //if (GameManager.Instance.map[x, y] == dCellType.dCrack_1 || GameManager.Instance.map[x, y] == dCellType.dNone)
+            //{
+            //    GameManager.Instance.map[x, y]++;
+            //}
+            GameObject crack = GameObject.Instantiate(CommonFunction.Instance.LoadSkill(_dir));
+            crack.transform.position = new Vector3(x * cellSize + offset, y * cellSize + offset, 0);
+        }
+    }
+    #endregion
+
+
+    IEnumerator Wait(float _time)
+    {
+        yield return new WaitForSeconds(_time);
+    }
 
 }
