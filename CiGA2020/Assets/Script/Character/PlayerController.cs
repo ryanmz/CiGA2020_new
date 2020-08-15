@@ -100,12 +100,16 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.LeftControl))
         {
+            /*
             GameObject crack = GameObject.Instantiate(CommonFunction.Instance.LoadSkill(dir));
             
             crack.transform.position = this.transform.position;
+            */
 
             Vector2 v = new Vector2(0, 0);
             this.Move(v, this.currentDir);
+
+            CommonFunction.Instance.GenerateCrack(this.transform, this.currentDir);
             return;
             
         }
