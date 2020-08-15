@@ -10,6 +10,7 @@ public class Skill : MonoBehaviour
     //技能属性
     public dDamage selfDamage;
     public dDirection currentDir;
+    public dCellType cellType;
    
     //技能组件
     private BoxCollider2D collider;
@@ -54,13 +55,13 @@ public class Skill : MonoBehaviour
 
     //碰撞接口
     #region
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.tag == CommonFunction.tagPlayer)
-        {
-            this.OnDamage();
-        }
-    }
+//    private void OnTriggerEnter2D(Collider2D collision)
+//    {
+//        if (collision.gameObject.tag == CommonFunction.tagPlayer)
+//        {
+//            this.OnDamage();
+//        }
+//    }
     #endregion
 
     //内部方法
@@ -103,10 +104,10 @@ public class Skill : MonoBehaviour
     }
 
     //技能伤害判定
-    void OnDamage()
-    {
-        Debug.Log("HA");
-    }
+//    void OnDamage()
+//    {
+//        Debug.Log("HA");
+//    }
     #endregion
 
 
