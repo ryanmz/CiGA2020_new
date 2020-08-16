@@ -38,6 +38,8 @@ public class PlayerController : MonoBehaviour
     protected AnimatorOverrideController animOverride;
     protected SpriteRenderer sprite;
 
+    //游戏管理器
+    private GameManager gameManager;
 
     //生命周期
     #region
@@ -48,6 +50,8 @@ public class PlayerController : MonoBehaviour
         this.anim = this.GetComponent<Animator>();
         this.animOverride = new AnimatorOverrideController(anim.runtimeAnimatorController);
         this.anim.runtimeAnimatorController = this.animOverride;
+
+        this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
     }
     // Update is called once per frame
@@ -99,9 +103,9 @@ public class PlayerController : MonoBehaviour
 
     private void ControllerB()
     {
-        //this.FallAnim(this.fall);
         AnimatorStateInfo animStateInfo = anim.GetCurrentAnimatorStateInfo(0);
-        if (!animStateInfo.IsName("Attack") && !animStateInfo.IsName("Fall")) 
+
+        if (!animStateInfo.IsName("Attack") && !animStateInfo.IsName("Fall") && !animStateInfo.IsName("Die"))
         {
             this.ResetFall();//重置摔倒
 
@@ -109,7 +113,7 @@ public class PlayerController : MonoBehaviour
 
             this.AnimSetUp(this.currentDir);//角色动画选择
         }
-        else if (animStateInfo.IsName("Attack") && animStateInfo.normalizedTime > 0.4&&this.isAttack)
+        else if (animStateInfo.IsName("Attack") && animStateInfo.normalizedTime > 0.4 && this.isAttack)
         {
             this.GenerateCrack(this.transform, this.currentDir);
             this.isAttack = false;
@@ -197,9 +201,9 @@ public class PlayerController : MonoBehaviour
     private void InputB()
     {
         Vector2 v = new Vector2();
-        if (Input.GetKey(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.LeftControl))
+        if (Input.GetKey(KeyCode.J) || Input.GetKeyDown(KeyCode.J))
         {
-            this.AttackA(this.currentDir);
+            this.AttackB(this.currentDir);
         }
         else
         {
@@ -306,9 +310,24 @@ public class PlayerController : MonoBehaviour
     private void Move(Vector2 v,float tSpeed)
     {
         
+        if(this.transform.position.x > this.gameManager.MaxRange.x*this.gameManager.cellSize)
+        {
+            return;
+        }
+        if (this.transform.position.y > this.gameManager.MaxRange.y * this.gameManager.cellSize)
+        {
+            return;
+        }
+        if (this.transform.position.x < this.gameManager.MinRange.x * this.gameManager.cellSize)
+        {
+            return;
+        }
+        if (this.transform.position.y < this.gameManager.MinRange.y * this.gameManager.cellSize)
+        {
+            return;
+        }
         v = v.normalized * tSpeed * Time.deltaTime;
         this.transform.Translate(v);
-        
     }
 
     //角色位移动画
