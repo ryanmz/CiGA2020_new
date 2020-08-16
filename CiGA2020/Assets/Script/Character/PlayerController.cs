@@ -21,10 +21,22 @@ public class PlayerController : MonoBehaviour
     public float undmgTime;
     public bool fall;
 
+
     //死亡数据
     public bool die = false;
 
-    private float recordTime = 0.0f;
+
+    //复活数据
+    public float respawnTime;
+
+
+
+    public float recordTime = 0.0f;
+    public float recordUndmg = 0.0f;
+    public float recordRespawn = 0.0f;
+
+    //放置物品
+    public bool isPut = false;
     #endregion
 
     public bool isPlayerOne = true;//判断1P还是2P
@@ -33,18 +45,23 @@ public class PlayerController : MonoBehaviour
     public AnimationClip[] animListRun;
     public AnimationClip[] animListAttack;
     public AnimationClip[] animListFall;
+    public AnimationClip[] animListPut;
     public AnimationClip[] animListDie;
     protected Animator anim;
     protected AnimatorOverrideController animOverride;
     protected SpriteRenderer sprite;
 
     //游戏管理器
+    public int boxCollections = 0;
+    public int frameCollections = 0;
     private GameManager gameManager;
+
 
     //生命周期
     #region
     void Start()
     {
+        this.recordUndmg = this.undmgTime;
         this.sprite = this.GetComponent<SpriteRenderer>();
 
         this.anim = this.GetComponent<Animator>();
@@ -57,7 +74,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(isPlayerOne)
+        if (isPlayerOne)
         {
             this.ControllerA();
         }
@@ -65,31 +82,61 @@ public class PlayerController : MonoBehaviour
         {
             this.ControllerB();
         }
+        this.UndmgTime();
+
+
+    }
+    #endregion
+
+    #region
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == CommonFunction.tagItem)
+        {
+            this.boxCollections++;
+            //Debug.Log(this.boxCollections);
+            Destroy(collision.gameObject);
+        }
+
+        if (collision.gameObject.tag == "Frame")
+        {
+            this.frameCollections++;
+            Destroy(collision.gameObject);
+        }
 
     }
     #endregion
 
 
-    //内部方法
     #region
     //角色控制
     private void ControllerA()
     {
-        
+
         AnimatorStateInfo animStateInfo = anim.GetCurrentAnimatorStateInfo(0);
 
-        if (!animStateInfo.IsName("Attack") && !animStateInfo.IsName("Fall") &&!animStateInfo.IsName("Die"))
+        Debug.Log("Put"+ animStateInfo.IsName("Put"));
+       
+        if (!animStateInfo.IsName("Attack") && !animStateInfo.IsName("Fall") && !animStateInfo.IsName("Die")&&!animStateInfo.IsName("Put"))
         {
+
             this.ResetFall();//重置摔倒
 
             this.InputA();//角色动画输入
 
             this.AnimSetUp(this.currentDir);//角色动画选择
         }
-       else if (animStateInfo.IsName("Attack") && animStateInfo.normalizedTime > 0.4&& this.isAttack)
+        else if (animStateInfo.IsName("Attack") && animStateInfo.normalizedTime > 0.4 && this.isAttack)
         {
             this.GenerateCrack(this.transform, this.currentDir);
             this.isAttack = false;
+        }
+        else if (animStateInfo.IsName("Put") && animStateInfo.normalizedTime > 0.4 && this.isPut)
+        {
+            Debug.Log("In");
+            this.GenerateBox(this.transform, this.currentDir);
+            this.isPut = false;
+            this.boxCollections--;
         }
         else if (animStateInfo.IsName("Fall"))
         {
@@ -105,8 +152,10 @@ public class PlayerController : MonoBehaviour
     {
         AnimatorStateInfo animStateInfo = anim.GetCurrentAnimatorStateInfo(0);
 
-        if (!animStateInfo.IsName("Attack") && !animStateInfo.IsName("Fall") && !animStateInfo.IsName("Die"))
+        if (!animStateInfo.IsName("Attack") && !animStateInfo.IsName("Fall") && !animStateInfo.IsName("Die") && !animStateInfo.IsName("Put"))
         {
+
+
             this.ResetFall();//重置摔倒
 
             this.InputB();//角色动画输入
@@ -117,6 +166,12 @@ public class PlayerController : MonoBehaviour
         {
             this.GenerateCrack(this.transform, this.currentDir);
             this.isAttack = false;
+        }
+        else if (animStateInfo.IsName("Put") && animStateInfo.normalizedTime > 0.4 && this.isPut)
+        {
+            this.GenerateBox(this.transform, this.currentDir);
+            this.isPut = false;
+            this.boxCollections--;
         }
         else if (animStateInfo.IsName("Fall"))
         {
@@ -136,6 +191,10 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.LeftControl))
         {
             this.AttackA(this.currentDir);
+        }
+        else if (Input.GetKey(KeyCode.Z) || Input.GetKeyDown(KeyCode.Z))
+        {
+            this.PutA();
         }
         else
         {
@@ -183,7 +242,7 @@ public class PlayerController : MonoBehaviour
             {
                 v = new Vector2(0.0f, 0.0f);
             }
-            this.Move(v,this.speed);
+            this.Move(v, this.speed);
             anim.SetFloat("Speed", v.magnitude);
         }
 
@@ -204,6 +263,10 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey(KeyCode.J) || Input.GetKeyDown(KeyCode.J))
         {
             this.AttackB(this.currentDir);
+        }
+        else if(Input.GetKey(KeyCode.K) || Input.GetKeyDown(KeyCode.K))
+        {
+            this.PutB();
         }
         else
         {
@@ -251,10 +314,10 @@ public class PlayerController : MonoBehaviour
             {
                 v = new Vector2(0.0f, 0.0f);
             }
-            this.Move(v,this.speed);
+            this.Move(v, this.speed);
             anim.SetFloat("Speed", v.magnitude);
         }
- 
+
         if (this.fall)
         {
             anim.SetTrigger("Fall");
@@ -279,7 +342,7 @@ public class PlayerController : MonoBehaviour
 
             anim.SetTrigger("Attack");
             Vector2 v = new Vector2(0, 0);
-            this.Move(v,this.speed);
+            this.Move(v, this.speed);
             this.isAttack = true;
             //this.GenerateCrack(this.transform, this.currentDir);
             return;
@@ -299,35 +362,77 @@ public class PlayerController : MonoBehaviour
 
             anim.SetTrigger("Attack");
             Vector2 v = new Vector2(0, 0);
-            this.Move(v,this.speed);
+            this.Move(v, this.speed);
             this.isAttack = true;
+            //this.GenerateCrack(this.transform, this.currentDir);
+            return;
+        }
+    }
+    public void PutA()
+    {
+        if (this.boxCollections < 1)
+            return;
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            AnimatorStateInfo animStateInfo = anim.GetCurrentAnimatorStateInfo(0);
+            if (animStateInfo.IsName("Run"))
+                anim.SetFloat("Speed", 1.0f);
+            else if (animStateInfo.IsName("Idle"))
+                anim.SetFloat("Speed", 0.0f);
+
+            anim.SetTrigger("Put");
+            Vector2 v = new Vector2(0, 0);
+            this.Move(v, this.speed);
+            this.isPut = true;
+            //this.GenerateCrack(this.transform, this.currentDir);
+            return;
+        }
+    }
+
+    public void PutB()
+    {
+        if (this.boxCollections < 1)
+            return;
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            AnimatorStateInfo animStateInfo = anim.GetCurrentAnimatorStateInfo(0);
+            if (animStateInfo.IsName("Run"))
+                anim.SetFloat("Speed", 1.0f);
+            else if (animStateInfo.IsName("Idle"))
+                anim.SetFloat("Speed", 0.0f);
+
+            anim.SetTrigger("Put");
+            Vector2 v = new Vector2(0, 0);
+            this.Move(v, this.speed);
+            this.isPut = true;
             //this.GenerateCrack(this.transform, this.currentDir);
             return;
         }
     }
 
     //角色的位移
-    private void Move(Vector2 v,float tSpeed)
+    private void Move(Vector2 v, float tSpeed)
     {
-        
-        if(this.transform.position.x > this.gameManager.MaxRange.x*this.gameManager.cellSize)
-        {
-            return;
-        }
-        if (this.transform.position.y > this.gameManager.MaxRange.y * this.gameManager.cellSize)
-        {
-            return;
-        }
-        if (this.transform.position.x < this.gameManager.MinRange.x * this.gameManager.cellSize)
-        {
-            return;
-        }
-        if (this.transform.position.y < this.gameManager.MinRange.y * this.gameManager.cellSize)
-        {
-            return;
-        }
+        //Debug.Log(this.transform.position);
         v = v.normalized * tSpeed * Time.deltaTime;
         this.transform.Translate(v);
+        if (this.transform.position.x >= this.gameManager.MaxRange.x * this.gameManager.cellSize)
+        {
+            this.transform.position = new Vector3(this.gameManager.MaxRange.x * this.gameManager.cellSize, this.transform.position.y, this.transform.position.z);
+        }
+        if (this.transform.position.y >= this.gameManager.MaxRange.y * this.gameManager.cellSize)
+        {
+            this.transform.position = new Vector3(this.transform.position.x, this.gameManager.MaxRange.y * this.gameManager.cellSize, this.transform.position.z);
+        }
+        if (this.transform.position.x <= this.gameManager.MinRange.x * this.gameManager.cellSize)
+        {
+            this.transform.position = new Vector3(this.gameManager.MinRange.x * this.gameManager.cellSize, this.transform.position.y, this.transform.position.z);
+        }
+        if (this.transform.position.y <= this.gameManager.MinRange.y * this.gameManager.cellSize)
+        {
+            this.transform.position = new Vector3(this.transform.position.x, this.gameManager.MinRange.y * this.gameManager.cellSize, this.transform.position.z);
+        }
+
     }
 
     //角色位移动画
@@ -339,15 +444,17 @@ public class PlayerController : MonoBehaviour
             this.animOverride["Run"] = this.animListRun[0];
             this.animOverride["Attack"] = this.animListAttack[0];
             this.animOverride["Fall"] = this.animListFall[0];
+            this.animOverride["Put"] = this.animListPut[0];
             this.animOverride["Die"] = this.animListDie[0];
             this.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
         }
-        else if(dir == dDirection.dUp_Left)
+        else if (dir == dDirection.dUp_Left)
         {
             this.animOverride["Idle"] = this.animListIdle[1];
             this.animOverride["Run"] = this.animListRun[1];
             this.animOverride["Attack"] = this.animListAttack[1];
             this.animOverride["Fall"] = this.animListFall[1];
+            this.animOverride["Put"] = this.animListPut[1];
             this.animOverride["Die"] = this.animListDie[1];
             this.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
         }
@@ -357,6 +464,7 @@ public class PlayerController : MonoBehaviour
             this.animOverride["Run"] = this.animListRun[2];
             this.animOverride["Attack"] = this.animListAttack[2];
             this.animOverride["Fall"] = this.animListFall[2];
+            this.animOverride["Put"] = this.animListPut[2];
             this.animOverride["Die"] = this.animListDie[2];
             this.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
         }
@@ -366,6 +474,7 @@ public class PlayerController : MonoBehaviour
             this.animOverride["Run"] = this.animListRun[3];
             this.animOverride["Attack"] = this.animListAttack[3];
             this.animOverride["Fall"] = this.animListFall[3];
+            this.animOverride["Put"] = this.animListPut[3];
             this.animOverride["Die"] = this.animListDie[3];
             this.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
         }
@@ -375,6 +484,7 @@ public class PlayerController : MonoBehaviour
             this.animOverride["Run"] = this.animListRun[4];
             this.animOverride["Attack"] = this.animListAttack[4];
             this.animOverride["Fall"] = this.animListFall[4];
+            this.animOverride["Put"] = this.animListPut[4];
             this.animOverride["Die"] = this.animListDie[4];
             this.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
         }
@@ -384,6 +494,7 @@ public class PlayerController : MonoBehaviour
             this.animOverride["Run"] = this.animListRun[3];
             this.animOverride["Attack"] = this.animListAttack[3];
             this.animOverride["Fall"] = this.animListFall[3];
+            this.animOverride["Put"] = this.animListPut[3];
             this.animOverride["Die"] = this.animListDie[3];
             this.transform.localScale = new Vector3(-1.0f, 1.0f, 1.0f);
         }
@@ -393,6 +504,7 @@ public class PlayerController : MonoBehaviour
             this.animOverride["Run"] = this.animListRun[2];
             this.animOverride["Attack"] = this.animListAttack[2];
             this.animOverride["Fall"] = this.animListFall[2];
+            this.animOverride["Put"] = this.animListPut[2];
             this.animOverride["Die"] = this.animListDie[2];
             this.transform.localScale = new Vector3(-1.0f, 1.0f, 1.0f);
         }
@@ -402,6 +514,7 @@ public class PlayerController : MonoBehaviour
             this.animOverride["Run"] = this.animListRun[1];
             this.animOverride["Attack"] = this.animListAttack[1];
             this.animOverride["Fall"] = this.animListFall[1];
+            this.animOverride["Put"] = this.animListPut[1];
             this.animOverride["Die"] = this.animListDie[1];
             this.transform.localScale = new Vector3(-1.0f, 1.0f, 1.0f);
         }
@@ -414,11 +527,11 @@ public class PlayerController : MonoBehaviour
     private void AnimHandler()
     {
         AnimatorStateInfo animStateInfo = anim.GetCurrentAnimatorStateInfo(0);
-        if (animStateInfo.IsName("Attack")&&animStateInfo.normalizedTime<1.0f)
+        if (animStateInfo.IsName("Attack") && animStateInfo.normalizedTime < 1.0f)
         {
             Vector2 v = new Vector2(0.0f, 0.0f);
-            this.Move(v,this.speed);
-            
+            this.Move(v, this.speed);
+
         }
     }
 
@@ -428,11 +541,14 @@ public class PlayerController : MonoBehaviour
         this.recordTime += Time.deltaTime;
         if (this.recordTime >= this.fallTime)
         {
-            Vector2 v = new Vector2(0.0f,0.0f);
+            Vector2 v = new Vector2(0.0f, 0.0f);
             this.Move(v, this.fallSpeed);
             if (this.recordTime >= this.pauseFallTime)
             {
                 this.anim.SetFloat("PauseTime", this.pauseFallTime);
+                this.recordUndmg = 0.0f;
+                Debug.Log("Fall()Fall()Fall()Fall()Fall()Fall()Fall()");
+                Debug.Log(this.recordUndmg);
             }
 
         }
@@ -442,6 +558,7 @@ public class PlayerController : MonoBehaviour
             this.Move(v, this.fallSpeed);
 
         }
+
     }
 
     private void ResetFall()
@@ -453,7 +570,31 @@ public class PlayerController : MonoBehaviour
     //角色死亡
     private void Die()
     {
-        
+
+        if (this.recordRespawn >= this.respawnTime && this.die)
+        {
+            this.gameManager.Respawn(this.gameObject);
+            this.die = false;
+            this.anim.SetBool("Die", false);
+            this.recordRespawn = 0.0f;
+        }
+        else
+        {
+            this.recordRespawn += Time.deltaTime;
+        }
+    }
+
+
+
+
+    public void UndmgTime()
+    {
+
+        this.recordUndmg += Time.deltaTime;
+        if (this.recordUndmg >= this.undmgTime)
+        {
+            this.recordUndmg = this.undmgTime;
+        }
     }
 
     // 生成裂缝
@@ -545,4 +686,74 @@ public class PlayerController : MonoBehaviour
     #endregion
 
 
+    //生成箱子
+    #region
+    public void GenerateBox(Transform _pos, dDirection _dir)
+    {
+        int cellSize = CommonFunction.Instance.cellSize;
+        int offset = (int)cellSize / 2;
+        int x = (int)_pos.position.x / cellSize;
+        int y = (int)(_pos.position.y - offset) / cellSize;
+
+
+        switch (_dir)
+        {
+            case dDirection.dUp_Up:
+                y++; break;
+            case dDirection.dUp_Left:
+                x--; y++; break;
+            case dDirection.dUp_Right:
+                x++; y++; break;
+            case dDirection.dDown_Down:
+                y--; break;
+            case dDirection.dDown_Left:
+                x--; y--; break;
+            case dDirection.dDown_Right:
+                x++; y--; break;
+            case dDirection.dLeft_Left:
+                x--; break;
+            case dDirection.dRight_Right:
+                x++; break;
+            default:
+                Debug.Log("Crack with No Dir!");
+                break;
+        }
+
+        Debug.Log("pass");
+        Debug.Log("Cell: " + x + ", " + y);
+        if (x < 0 || y < 0 || x >= CommonFunction.Instance.MapWidth || y >= CommonFunction.Instance.MapHeight)
+        {
+            return;
+        }
+
+        //Debug.Log(x + ", " + y);
+        dCellType[,] tMap = GameObject.Find("GameManager").GetComponent<GameManager>().map;
+        GameObject[,] objects = GameObject.Find("GameManager").GetComponent<GameManager>().obj;
+
+        if (tMap[x, y] == dCellType.dCrack_2)
+        {
+            tMap[x, y] = dCellType.dBlock;
+            Destroy(objects[x, y]);
+            GameObject fill = GameObject.Instantiate(CommonFunction.Instance.LoadSkill(_dir, tMap[x, y]));
+            fill.transform.position = new Vector3(x * cellSize + offset, y * cellSize + offset, 0);
+
+        }
+        else if (tMap[x, y] == dCellType.dNone)
+        {
+            tMap[x, y] = dCellType.dItem;
+            GameObject tObj = GameObject.Instantiate((GameObject)(Resources.Load("Prefabs/ItemPrefab")));
+            if (objects[x, y] == null)
+            {
+                objects[x, y] = tObj;
+            }
+            tObj.transform.position = new Vector3(x * cellSize + cellSize / 2, y * cellSize + cellSize / 2, 0);
+        }
+
+        //GameObject crack = GameObject.Instantiate(CommonFunction.Instance.LoadSkill(_dir, tMap[x, y]));
+        //crack.transform.position = new Vector3(x * cellSize + offset, y * cellSize + offset, 0);
+
+        #endregion
+
+
+    }
 }

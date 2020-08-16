@@ -7,12 +7,13 @@ public class GameManager : MonoBehaviour
 
     // 可调整参数
     #region
-    public int MapWidth = 30;               // 地图宽度（格子数）
-    public int MapHeight = 16;              // 地图高度（格子数）
+    public int MapWidth = 20;               // 地图宽度（格子数）
+    public int MapHeight = 11;              // 地图高度（格子数）
     public int cellSize = 64;               // 格子单位长度
 
     public bool canGenerateItem1 = true;
     public float itemGenerate1Timer = 0;
+    public float frameGenerateTimer = 0;
 
 
     public Vector2 MinRange;
@@ -27,6 +28,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Time.timeScale = 1.0F;
         obj = new GameObject[MapWidth, MapHeight];
         map = new dCellType[MapWidth, MapHeight];
         for (int i = 0; i <MapWidth; i++)
@@ -45,64 +47,23 @@ public class GameManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        if(canGenerateItem1)
+        itemGenerate1Timer += Time.deltaTime;
+        if (itemGenerate1Timer >= CommonFunction.Instance.itemInterval)
         {
             this.GenerateItem2();
-            canGenerateItem1 = false;
+            itemGenerate1Timer = 0;
         }
-        else
+
+        frameGenerateTimer += Time.deltaTime;
+        if (frameGenerateTimer >= CommonFunction.Instance.frameInterval)
         {
-            itemGenerate1Timer += Time.deltaTime;
-            if(itemGenerate1Timer>=CommonFunction.Instance.itemInterval)
-            {
-                canGenerateItem1 = true;
-                itemGenerate1Timer = 0;
-            }
+            this.GenerateFrame();
+            frameGenerateTimer = 0;
         }
     }
 
-    // 生成道具
-    #region
-    //public void GenerateItem()
-    //{
-    //    Debug.Log("In_1");
-    //    StartCoroutine(WaitForItem());
-    //}
-
-    //IEnumerator WaitForItem()
-    //{
-    //    dCellType tempT = dCellType.dBlock;
-    //    int tx = 0, ty = 0;
-
-    //    Debug.Log("In_2");
-    //    while (true)
-    //    {
-    //        while (tempT != dCellType.dItem)
-    //        {
-    //            tx = Random.Range(0, MapWidth - 1);
-    //            ty = Random.Range(0, MapHeight - 1);
-    //            Debug.Log(tx + ", " + ty);
-
-    //            if (map[tx, ty] == dCellType.dNone)
-    //            {
-    //                tempT = map[tx, ty];
-    //            }
-    //        }
-
-    //        map[tx, ty] = dCellType.dItem;
-    //        GameObject tObj = GameObject.Instantiate((GameObject)(Resources.Load("Prefab/ItemPrefab")));
-    //        if (obj[tx, ty] == null)
-    //        {
-    //            obj[tx, ty] = tObj;
-    //        }
-    //        tObj.transform.position = new Vector3(tx * cellSize + cellSize / 2, ty * cellSize + cellSize / 2, 0);
-
-
-    //        yield return new WaitForSeconds(CommonFunction.Instance.itemInterval);
-    //    }
-    //}
 
     void GenerateItem2()
     {
@@ -114,7 +75,7 @@ public class GameManager : MonoBehaviour
         {
             tx = Random.Range(0, MapWidth - 1);
             ty = Random.Range(0, MapHeight - 1);
-            Debug.Log(tx + ", " + ty);
+            //Debug.Log(tx + ", " + ty);
 
             if (map[tx, ty] == dCellType.dNone)
             {
@@ -131,6 +92,72 @@ public class GameManager : MonoBehaviour
         tObj.transform.position = new Vector3(tx * cellSize + cellSize / 2, ty * cellSize + cellSize / 2, 0);
 
     }
-    #endregion
 
+    public void GenerateFrame()
+    {
+        dCellType tempT = dCellType.dBlock;
+        int tx = 0, ty = 0;
+
+        while (tempT != dCellType.dFrame)
+        {
+            tx = Random.Range(0, MapWidth - 1);
+            ty = Random.Range(0, MapHeight - 1);
+            //Debug.Log(tx + ", " + ty);
+
+            if (map[tx, ty] == dCellType.dNone)
+            {
+                tempT = dCellType.dFrame;
+            }
+        }
+
+        map[tx, ty] = dCellType.dFrame;
+        GameObject tObj = GameObject.Instantiate((GameObject)(Resources.Load("Prefabs/FramePrefab")));
+        if (obj[tx, ty] == null)
+        {
+            obj[tx, ty] = tObj;
+        }
+        tObj.transform.position = new Vector3(tx * cellSize + cellSize / 2, ty * cellSize + cellSize / 2, 0);
+
+    }
+
+    public void Respawn(GameObject player)
+    {
+        dCellType tempT = dCellType.dFrame;
+        int tx = 0, ty = 0;
+
+        while (tempT != dCellType.dNone)
+        {
+            tx = Random.Range(0, MapWidth - 1);
+            ty = Random.Range(0, MapHeight - 1);
+            //Debug.Log(tx + ", " + ty);
+
+            if (map[tx, ty] == dCellType.dFrame)
+            {
+                tempT = dCellType.dFrame;
+            }
+            else if (map[tx, ty] == dCellType.dBlock)
+            {
+                tempT = dCellType.dBlock;
+            }
+            else if (map[tx, ty] == dCellType.dCrack_1)
+            {
+                tempT = dCellType.dCrack_1;
+            }
+            else if (map[tx, ty] == dCellType.dCrack_2)
+            {
+                tempT = dCellType.dCrack_2;
+            }
+            else if (map[tx, ty] == dCellType.dItem)
+            {
+                tempT = dCellType.dItem;
+            }
+            else if (map[tx, ty] == dCellType.dNone)
+            {
+                tempT = dCellType.dNone;
+            }
+        }
+
+
+        player.transform.position = new Vector3(tx * cellSize + cellSize / 2, ty * cellSize + cellSize / 2, 0);
+    }
 }

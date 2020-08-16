@@ -25,5 +25,6 @@ public enum dCellType
     dCrack_1 = 1,
     dCrack_2 = 2,
     dBlock = 3,
-    dItem = 4,
+    dFrame = 4,
+    dItem = 5,
 }

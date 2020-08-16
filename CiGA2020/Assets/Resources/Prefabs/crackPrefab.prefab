@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3235591719988308054}
   - component: {fileID: 3235591719988308055}
   - component: {fileID: 3235591719988308052}
+  - component: {fileID: -5330132897317678476}
   m_Layer: 0
   m_Name: crackPrefab
   m_TagString: Untagged
@@ -28,7 +29,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3235591719988308043}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -108.001724, y: 128.96104, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -72,7 +73,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 840653179
   m_SortingLayer: 1
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: 536e25eda2ef49546adb6adc174b79b1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -149,3 +150,15 @@ MonoBehaviour:
   - {fileID: 7400000, guid: 98d5f62be35dc5b449c3b70990c4cbf5, type: 2}
   - {fileID: 7400000, guid: 9511f6660fb00a04b9af1402a8a43e01, type: 2}
   - {fileID: 7400000, guid: feaaec9027df5b54b89960031894ccbe, type: 2}
+--- !u!114 &-5330132897317678476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3235591719988308043}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9f95fe1aad598f4aa2e43ce40a5f8ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

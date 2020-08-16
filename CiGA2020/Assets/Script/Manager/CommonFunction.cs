@@ -5,13 +5,15 @@ using System.Collections.Generic;
 public class CommonFunction : Singleton<CommonFunction>
 {
     static public string tagPlayer = "Player";
-    public int MapWidth = 30;               // 地图宽度（格子数）
-    public int MapHeight = 16;              // 地图高度（格子数）
+    static public string tagItem = "Item";
+    public int MapWidth = 20;               // 地图宽度（格子数）
+    public int MapHeight = 11;              // 地图高度（格子数）
     public int cellSize = 64;               // 格子单位长度
 
 
     public float crackInterval = 0.5f;      // 裂缝生成时间间隔
     public float itemInterval = 5.0f;
+    public float frameInterval = 10.0f;
 
     public Sprite LoadSprite(dDirection dir)
     {
@@ -54,7 +56,7 @@ public class CommonFunction : Singleton<CommonFunction>
         return null;
     }
 
-    // *需要增加二级裂缝
+    // 载入裂缝
     public GameObject LoadSkill(dDirection dir, dCellType _t)
     {
         GameObject tem;
@@ -68,6 +70,12 @@ public class CommonFunction : Singleton<CommonFunction>
         else if (_t == dCellType.dCrack_2)
         {
             tem = (GameObject)Resources.Load("Prefabs/crackPrefab_2");
+            tem.GetComponent<Skill>().currentDir = dir;
+            tem.GetComponent<SpriteRenderer>().sortingLayerName = "bg";
+            return tem;
+        }else if(_t == dCellType.dBlock)
+        {
+            tem = (GameObject)Resources.Load("Prefabs/crackPrefab_3");
             tem.GetComponent<Skill>().currentDir = dir;
             tem.GetComponent<SpriteRenderer>().sortingLayerName = "bg";
             return tem;
@@ -117,5 +125,30 @@ public class CommonFunction : Singleton<CommonFunction>
         return v.normalized;
     }
 
+
+
+    public void MainMenu()
+    {
+        Application.LoadLevel(0);
+    }
+
+    public void TutorialScene()
+    {
+        Application.LoadLevel(1);
+    }
+
+    public void CreditScene()
+    {
+        Application.LoadLevel(2);
+    }
+    public void ReStart()
+    {
+        Application.LoadLevel(3);
+    }
+
+    public void ExitGame()
+    {
+        Application.Quit();
+    }
 
 }

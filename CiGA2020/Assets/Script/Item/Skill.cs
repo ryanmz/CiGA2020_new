@@ -19,6 +19,7 @@ public class Skill : MonoBehaviour
     protected Animator anim;
     protected AnimatorOverrideController animOverride;
     public AnimationClip[] list;
+
     #endregion
 
     //生命周期
@@ -26,6 +27,7 @@ public class Skill : MonoBehaviour
     // 初始化数据
     void Start()
     {
+
         this.anim = this.GetComponent<Animator>();
         this.collider = this.GetComponent<BoxCollider2D>();
         this.collider.enabled = false;
@@ -55,7 +57,7 @@ public class Skill : MonoBehaviour
 
     //碰撞接口
     #region
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.gameObject.tag == CommonFunction.tagPlayer)
         {
@@ -72,18 +74,22 @@ public class Skill : MonoBehaviour
         if (currentDir == dDirection.dDown_Down)
         {
             this.animOverride["Born"] = this.list[0];
+
         }
         else if (currentDir == dDirection.dUp_Up)
         {
             this.animOverride["Born"] = this.list[0];
+
         }
         else if (currentDir == dDirection.dLeft_Left)
         {
             this.animOverride["Born"] = this.list[1];
+
         }
         else if (currentDir == dDirection.dRight_Right)
         {
             this.animOverride["Born"] = this.list[1];
+
         }
         else if (currentDir == dDirection.dUp_Left)
         {
@@ -105,11 +111,16 @@ public class Skill : MonoBehaviour
             this.animOverride["Born"] = this.list[2];
             this.transform.localScale = new Vector3(-this.transform.localScale.x, this.transform.localScale.y, this.transform.localScale.z);
         }
+
+
     }
 
     //技能伤害判定
     void OnDamage(GameObject target)
     {
+        if (target.GetComponent<PlayerController>().recordUndmg < target.GetComponent<PlayerController>().undmgTime)
+            return;
+
         if (this.cellType == dCellType.dCrack_1)
         {
             target.GetComponent<PlayerController>().fall = true;
