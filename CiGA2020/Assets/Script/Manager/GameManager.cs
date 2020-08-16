@@ -15,6 +15,9 @@ public class GameManager : MonoBehaviour
     public float itemGenerate1Timer = 0;
 
 
+    public Vector2 MinRange;
+    public Vector2 MaxRange;
+
     //public float crackInterval = 2f;      // 裂缝生成时间间隔
     #endregion
 
